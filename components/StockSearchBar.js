@@ -5,8 +5,11 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStockSearchBarStyle = makeStyles(theme => ({
+    root: {
+        width: 300
+    },
     textFieldRoot: {
-
+        backgroundColor: "#fff"
     },
     icon: {
 
@@ -17,7 +20,7 @@ const StockSearchBar = () => {
     const classes = useStockSearchBarStyle();
 
     return (
-        <div style={{ width: 300 }}>
+        <div className={classes.root}>
             <Autocomplete
                 id="free-solo-demo"
                 freeSolo

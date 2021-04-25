@@ -26,6 +26,19 @@ const theme = createMuiTheme({
     },
     spacing: 5,
     overrides: {
+        MuiCssBaseline: {
+            "@global": {
+                html: {
+                    margin: 0,
+                    padding: 0
+                },
+                body: {
+                    margin: 0,
+                    padding: 0,
+                    backgroundColor: "#f8fbff"
+                }
+            }
+        },
         MuiAppBar: {
             colorDefault: {
                 backgroundColor: "white"
