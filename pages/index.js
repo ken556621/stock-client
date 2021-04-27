@@ -22,10 +22,6 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
-      <Head>
-        <title>Stock Searching</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <div className={classes.searchBarRoot}>
         <StockSearchBar />
       </div>

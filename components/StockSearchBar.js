@@ -3,10 +3,11 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Button from '@material-ui/core/Button';
 
 const useStockSearchBarStyle = makeStyles(theme => ({
     root: {
-        width: 300
+        width: 500
     },
     textFieldRoot: {
         backgroundColor: "#fff"
@@ -22,9 +23,12 @@ const StockSearchBar = () => {
     return (
         <div className={classes.root}>
             <Autocomplete
-                id="free-solo-demo"
-                freeSolo
-                options={top100Films.map((option) => option.title)}
+                multiple
+                id="size-small-standard-multi"
+                size="small"
+                options={top100Films}
+                getOptionLabel={(option) => option.title}
+                defaultValue={[top100Films[13]]}
                 renderInput={(params) => (
                     <TextField
                         classes={{
@@ -32,7 +36,7 @@ const StockSearchBar = () => {
                         }}
                         {...params}
                         label="Stock ID or Name"
-                        margin="normal"
+                        margin="dense"
                         variant="outlined"
                     />
                 )}
