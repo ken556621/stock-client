@@ -1,8 +1,7 @@
-import Head from "next/head";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import StockSearchBar from "@/components/StockSearchBar";
+import StockSearchBar from "@/components/searchInput/StockSearchBar";
 
 const useHomeStyles = makeStyles(theme => ({
   root: {
@@ -28,5 +27,9 @@ const Home = () => {
     </div>
   )
 };
+
+// Todo:
+// 1. JWT 認證會員系統
+// 2. Price and other element relevent, ex:price and news, price and weather?
 
 export default Home;

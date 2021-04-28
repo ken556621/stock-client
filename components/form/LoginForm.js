@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,7 +8,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import EmailIcon from '@material-ui/icons/Email';
-import PersonIcon from '@material-ui/icons/Person';
 import LockIcon from '@material-ui/icons/Lock';
 
 
@@ -38,7 +38,13 @@ const LoginForm = () => {
         mode: "onChange"
     });
 
+    const router = useRouter();
+
     const classes = useLoginFormStyles();
+
+    const handleClickLoginBtn = () => {
+        router.push("/authorization/login")
+    }
 
     const onSubmit = (data) => {
         console.log(data)
@@ -73,29 +79,7 @@ const LoginForm = () => {
                     fullWidth
                     margin="normal"
                 >
-                    <InputLabel htmlFor="email">
-                        Name
-                    </InputLabel>
-                    <Input
-                        id="name"
-                        type="name"
-                        name="name"
-                        placeholder="Please Type Name"
-                        autoFocus
-                        {...register("name", { required: true })}
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <PersonIcon />
-                            </InputAdornment>
-                        }
-                    />
-                    {errors.name && <span className={classes.error}>Name is required</span>}
-                </FormControl>
-                <FormControl
-                    fullWidth
-                    margin="normal"
-                >
-                    <InputLabel htmlFor="email">
+                    <InputLabel htmlFor="password">
                         Password
                     </InputLabel>
                     <Input
@@ -115,9 +99,18 @@ const LoginForm = () => {
                 </FormControl>
                 <div className={classes.submitBtnRoot}>
                     <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleClickLoginBtn}
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
                         type="submit"
                     >
-                        Submit
+                        Signup
                     </Button>
                 </div>
             </form>
