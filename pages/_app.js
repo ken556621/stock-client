@@ -1,3 +1,7 @@
+import { Provider } from "react-redux";
+import { useStore } from "@/redux/store";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 import Head from "next/head";
 
 import { ThemeProvider } from "@material-ui/styles";
@@ -15,13 +19,20 @@ const MetaInfo = () => {
 };
 
 const MyApp = ({ Component, pageProps }) => {
+  const store = useStore(pageProps.initialReduxState);
+  const persistor = persistStore(store);
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline>
-        <MetaInfo />
-        <Component {...pageProps} />
-      </CssBaseline>
-    </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline>
+            <MetaInfo />
+            <Component {...pageProps} />
+          </CssBaseline>
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
   )
 }
 

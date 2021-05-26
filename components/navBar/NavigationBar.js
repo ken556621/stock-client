@@ -1,5 +1,10 @@
+import { useDispatch, useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
+
+import {
+    setUserSelected
+} from "@/redux/actions/user";
 
 
 
@@ -23,6 +28,8 @@ const useNavigationBarStyles = makeStyles((theme) => ({
 const NavigationBar = () => {
     const classes = useNavigationBarStyles();
 
+    const dispatch = useDispatch();
+
     const navigationBarSchema = [
         {
             title: "總體經濟",
@@ -39,7 +46,7 @@ const NavigationBar = () => {
     ];
 
     const handleClickNav = (type) => {
-        console.log(type)
+        dispatch(setUserSelected(type))
     };
 
     const renderNavBar = () => {
