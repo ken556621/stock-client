@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -22,6 +23,9 @@ const useNavigationBarStyles = makeStyles((theme) => ({
         "&:not(&:last-of-type)": {
             marginRight: theme.spacing(2)
         }
+    },
+    selected: {
+        color: "#fff"
     }
 }));
 
@@ -29,6 +33,8 @@ const NavigationBar = () => {
     const classes = useNavigationBarStyles();
 
     const dispatch = useDispatch();
+
+    const { userSelectedType } = useSelector(state => state.user);
 
     const navigationBarSchema = [
         {
@@ -53,7 +59,9 @@ const NavigationBar = () => {
         return navigationBarSchema.map(item => (
             <div
                 key={item.value}
-                className={classes.tab}
+                className={clsx(classes.tab, {
+                    [classes.selected]: userSelectedType === item.value
+                })}
                 onClick={() => handleClickNav(item.value)}
             >
                 {item.title}

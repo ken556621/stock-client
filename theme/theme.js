@@ -30,7 +30,8 @@ const theme = createMuiTheme({
             "@global": {
                 html: {
                     margin: 0,
-                    padding: 0
+                    padding: 0,
+                    fontFamily: "Lato, Helvetica, Arial, sans-serif, PingFang, Microsoft JhengHei"
                 },
                 body: {
                     margin: 0,
