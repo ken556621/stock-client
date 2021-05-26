@@ -1,19 +1,20 @@
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import NavigationBar from "@/components/navBar/NavigationBar";
 import StockSearchBar from "@/components/searchInput/StockSearchBar";
+import NavigationBar from "@/components/navBar/NavigationBar";
+import Footer from "@/components/footer/Footer";
 
 const useHomeStyles = makeStyles(theme => ({
   root: {
     position: "relative",
-    minHeight: 550
+    minHeight: "100vh"
   },
   searchBarRoot: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    height: 500
+    minHeight: "calc(100vh - 118px)"
   }
 }))
 
@@ -26,6 +27,7 @@ const Home = () => {
       <div className={classes.searchBarRoot}>
         <StockSearchBar />
       </div>
+      <Footer />
     </div>
   )
 };

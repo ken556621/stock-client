@@ -12,7 +12,7 @@ import theme from "@/theme/theme";
 const MetaInfo = () => {
   return (
     <Head>
-      <title>Stock Searching</title>
+      <title>Koophio</title>
       <link rel="icon" href="/favicon.ico" />
     </Head>
   )
