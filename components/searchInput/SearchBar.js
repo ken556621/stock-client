@@ -76,17 +76,7 @@ const useCustomInputStyles = makeStyles((theme) => ({
     },
     adornedEnd: {
         "& > *:last-child": {
-            // color: "#5d799c",
             transition: theme.transitions.create(["color"])
-        }
-    },
-    focused: {
-        // borderColor: "#5d799c",
-        "&$adornedStart > *:first-child": {
-            // color: "#5d799c"
-        },
-        "&$adornedEnd > *:last-child": {
-            // color: "#5d799c"
         }
     },
     error: {
