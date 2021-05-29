@@ -1,11 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
-
-import {
-    setUserSelected
-} from "@/redux/actions/user";
 
 
 
@@ -32,9 +28,7 @@ const useNavigationBarStyles = makeStyles((theme) => ({
 const NavigationBar = () => {
     const classes = useNavigationBarStyles();
 
-    const dispatch = useDispatch();
-
-    const { userSelectedType } = useSelector(state => state.user);
+    const router = useRouter();
 
     const navigationBarSchema = [
         {
@@ -52,7 +46,7 @@ const NavigationBar = () => {
     ];
 
     const handleClickNav = (type) => {
-        dispatch(setUserSelected(type))
+        router.push(`/overview/${type}`)
     };
 
     const renderNavBar = () => {
@@ -60,7 +54,7 @@ const NavigationBar = () => {
             <div
                 key={item.value}
                 className={clsx(classes.tab, {
-                    [classes.selected]: userSelectedType === item.value
+                    [classes.selected]: location.pathname.includes(item.value)
                 })}
                 onClick={() => handleClickNav(item.value)}
             >
