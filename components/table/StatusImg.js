@@ -28,13 +28,13 @@ const StatusImg = (props) => {
         let img = "";
         switch (status) {
             case "noData":
-                img = <img src="img/no-data.png" style={{ width: width, height: height }} />
+                img = <img src="/img/no-data.png" style={{ width: width, height: height }} />
                 break;
             case "inputData":
-                img = <img src="img/input-data.png" style={{ width: width, height: height }} />
+                img = <img src="/img/input-data.png" style={{ width: width, height: height }} />
                 break;
             default:
-                img = <img src="img/no-data.png" style={{ width: width, height: height }} />
+                img = <img src="/img/no-data.png" style={{ width: width, height: height }} />
                 break;
         }
 

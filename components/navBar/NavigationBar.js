@@ -33,7 +33,7 @@ const NavigationBar = () => {
     const navigationBarSchema = [
         {
             title: "總體經濟",
-            value: "macroEconomics"
+            value: "macroEconomic"
         },
         {
             title: "類股",
