@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBar from "@/components/navBar/NavigationBar";
+import VolumnHistorySection from "@/components/page-content/industrialStock/VolumnHistorySection";
 import Footer from "@/components/footer/Footer";
 
 const useMacroEconomicStyles = makeStyles((theme) => ({
@@ -22,7 +23,7 @@ const industrialStock = () => {
         <div className={classes.container}>
             <NavigationBar />
             <div className={classes.content}>
-
+                <VolumnHistorySection />
             </div>
             <Footer />
         </div>
