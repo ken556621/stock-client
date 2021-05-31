@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
-
+import { CircularProgress } from "@material-ui/core";
 
 
 const useNoDataStyles = makeStyles(theme => ({
@@ -32,6 +32,9 @@ const StatusImg = (props) => {
                 break;
             case "inputData":
                 img = <img src="/img/input-data.png" style={{ width: width, height: height }} />
+                break;
+            case "loading":
+                img = <CircularProgress style={{ padding: 20 }} size={100} />
                 break;
             default:
                 img = <img src="/img/no-data.png" style={{ width: width, height: height }} />

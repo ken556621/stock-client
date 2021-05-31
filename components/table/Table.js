@@ -18,7 +18,6 @@ import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import RootRef from "@material-ui/core/RootRef";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { CircularProgress } from "@material-ui/core";
 
 import clsx from "clsx";
 
@@ -483,12 +482,7 @@ const BasicTable = (props) => {
 
         if (isBoolean(isLoading)) {
             return (
-                <div className={currentClasses.loadingWrapper}>
-                    <CircularProgress
-                        style={{ padding: 20 }}
-                        size={100}
-                    />
-                </div>
+                <StatusImg type="loading" word="Data is loading" />
             );
         }
     };
