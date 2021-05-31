@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
 import ShowChartIcon from '@material-ui/icons/ShowChart';
@@ -9,7 +10,8 @@ import {
 } from "@/api/individualStock";
 
 import { BasicTable } from "@/components/table/Table";
-import clsx from "clsx";
+import CompanyDetailPopup from "@/components/page-content/individualStock/CompanyDetailPopup";
+
 
 
 const useMacroEconomicStyles = makeStyles((theme) => ({
@@ -46,6 +48,9 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
     },
     goingDown: {
         color: "#00ab5e"
+    },
+    nameWrapper: {
+        cursor: "pointer"
     }
 }));
 
@@ -53,6 +58,7 @@ const VolumnRankSection = () => {
     const classes = useMacroEconomicStyles();
 
     const [volumnRankList, setVolumnRankList] = useState([]);
+    const [targetStock, setTargetStock] = useState("");
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -80,6 +86,10 @@ const VolumnRankSection = () => {
                 percentage: item.percentage
             }
         })
+    };
+
+    const handleClickName = (stockId) => {
+        setTargetStock(stockId);
     };
 
     const tableColumn = [
@@ -110,16 +120,19 @@ const VolumnRankSection = () => {
             ),
             component(data) {
                 const name = data.name.split(",")[0];
-                const id = data.name.split(",")[1];
+                const id = data.name.split(",")[1].split(".")[0];
                 return (
-                    <>
-                        <div className={classes.name}>
+                    <div
+                        className={classes.nameWrapper}
+                        onClick={() => handleClickName(id)}
+                    >
+                        <div>
                             {name}
                         </div>
-                        <div className={classes.id}>
+                        <div>
                             {id}
                         </div>
-                    </>
+                    </div>
                 )
             }
         },
@@ -189,6 +202,9 @@ const VolumnRankSection = () => {
                 columns={tableColumn}
                 pagination
                 defaultImgWord={"No Data Found"}
+            />
+            <CompanyDetailPopup
+                stockId={targetStock}
             />
         </div>
     )

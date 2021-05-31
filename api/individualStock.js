@@ -9,3 +9,7 @@ export const getVolumnRank = () => {
 export const getIndustryVolumn = () => {
     return request.get(`/${path}/industry-volume`);
 }
+
+export const getCompanyDetail = ({ body }) => {
+    return request.post(`/${path}/company-detail`, body);
+}

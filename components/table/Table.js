@@ -541,14 +541,14 @@ const BasicTable = (props) => {
                                         loadingAllRows
                                     ) {
                                         return (
-                                            <TableCellWrapper>
+                                            <TableCellWrapper key={colIndex} >
                                                 <Skeleton height={20} />
                                             </TableCellWrapper>
                                         )
                                     }
 
                                     return (
-                                        <TableCellWrapper>
+                                        <TableCellWrapper key={colIndex}>
                                             {
                                                 _renderTableItem(
                                                     row,
