@@ -98,7 +98,7 @@ const VolumnRankSection = () => {
     const tableColumn = [
         {
             id: "rank",
-            width: 80,
+            width: "25%",
             fixed: "left",
             label: (
                 <div className={classes.header}>
@@ -115,7 +115,7 @@ const VolumnRankSection = () => {
         },
         {
             id: "name",
-            width: "33%",
+            width: "25%",
             label: (
                 <div className={classes.header}>
                     名稱 / 代號
@@ -141,7 +141,7 @@ const VolumnRankSection = () => {
         },
         {
             id: "price",
-            width: "33%",
+            width: "25%",
             label: (
                 <div className={classes.header}>
                     價格
@@ -165,7 +165,7 @@ const VolumnRankSection = () => {
         },
         {
             id: "percentage",
-            width: "33%",
+            width: "25%",
             label: (
                 <div className={classes.header}>
                     漲幅 / 跌幅

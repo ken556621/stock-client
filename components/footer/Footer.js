@@ -1,5 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 
+import dayjs from "dayjs";
+
 
 const useFooterStyles = makeStyles((theme) => ({
     container: {
@@ -15,7 +17,7 @@ const Footer = () => {
 
     return (
         <div className={classes.container}>
-            Copyright © 2021 Koophio
+            {`Copyright © ${dayjs().year()} Koophio`}
         </div>
     )
 };

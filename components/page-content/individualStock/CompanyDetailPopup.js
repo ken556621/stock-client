@@ -12,18 +12,39 @@ import PieChartIcon from '@material-ui/icons/PieChart';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import PlaceIcon from '@material-ui/icons/Place';
 
+import MiniLine from "@/components/charts/MiniLine";
+
 import {
     getCompanyDetail
 } from "@/api/individualStock";
 
 
 const useCompanyDetailPopupStyles = makeStyles((theme) => ({
-    container: {
-
-    },
     itemWordWrapper: {
         minWidth: 300,
         display: "flex"
+    },
+    content: {
+        position: "relative"
+    },
+    chartWrapper: {
+        position: "absolute",
+        top: "5%",
+        right: "10%",
+        width: 150
+    },
+    chartTitle: {
+        marginBottom: theme.spacing(2),
+        color: "#0a2f5c"
+    },
+    legend: {
+        marginLeft: theme.spacing(1),
+        fontSize: ".5rem",
+        color: "#00ab5e",
+        "&:first-of-type": {
+            marginLeft: theme.spacing(2),
+            color: "#ff333a"
+        }
     },
     icon: {
         marginRight: theme.spacing(2),
@@ -140,27 +161,37 @@ const CompanyDetailPopup = (props) => {
     const open = Boolean(anchorEl);
 
     return (
-        <div className={classes.container}>
-            <Popover
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "center",
-                }}
-            >
-                <div className={classes.content}>
-                    <List dense={true}>
-                        <CustomListItem />
-                    </List>
+        <Popover
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+            }}
+            transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+            }}
+        >
+            <div className={classes.content}>
+                <div className={classes.chartWrapper}>
+                    <div className={classes.chartTitle}>
+                        今年走勢
+                        <span className={classes.legend}>
+                            最高價
+                        </span>
+                        <span className={classes.legend}>
+                            最低價
+                        </span>
+                    </div>
+                    <MiniLine stockId={stockId} />
                 </div>
-            </Popover>
-        </div>
+                <List dense={true}>
+                    <CustomListItem />
+                </List>
+            </div>
+        </Popover>
     )
 };
 
