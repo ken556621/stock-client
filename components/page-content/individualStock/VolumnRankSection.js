@@ -38,7 +38,7 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
         }
     },
     icon: {
-        color: "#5585c2"
+        color: "#0a2f5c"
     },
     header: {
         wordBreak: "keep-all"
@@ -50,7 +50,10 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
         color: "#00ab5e"
     },
     nameWrapper: {
-        cursor: "pointer"
+        cursor: "pointer",
+        "&:hover": {
+            backgroundColor: "#eee"
+        }
     }
 }));
 
@@ -80,7 +83,7 @@ const VolumnRankSection = () => {
     const formatTableData = (data) => {
         return data.map((item, index) => {
             return {
-                rank: index,
+                rank: index + 1,
                 name: item.name + "," + item.id,
                 price: item.price,
                 percentage: item.percentage
@@ -145,9 +148,17 @@ const VolumnRankSection = () => {
                 </div>
             ),
             component(data) {
+                const isGoingUp = data.price.split(",")[0] === "+";
+                const isGoingDown = data.price.split(",")[0] === "-";
+                const number = data.price.split(",")[1] || data.price;
                 return (
-                    <div className={classes.price}>
-                        {data.price}
+                    <div
+                        className={clsx({
+                            [classes.goingUp]: isGoingUp,
+                            [classes.goingDown]: isGoingDown
+                        })}
+                    >
+                        {number}
                     </div>
                 )
             }
