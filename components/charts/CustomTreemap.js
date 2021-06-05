@@ -14,7 +14,7 @@ const CustomTreemap = (props) => {
         isLoading = false
     } = props;
 
-    const _renderContent = (props) => {
+    const renderContent = (props) => {
         const { x, y, width, height, name, value } = props;
 
         const fontSize = width * 0.1 < 14 || height * 0.1 < 14 ? 14 : (width + height) / 2 * 0.1;
@@ -22,7 +22,10 @@ const CustomTreemap = (props) => {
         const fontY = y + height / 2 - 5;
 
         return (
-            <>
+            <svg
+                style={{ cursor: "pointer" }}
+                onClick={() => { console.log("qqq========") }}
+            >
                 <text
                     x={fontX}
                     y={fontY}
@@ -43,7 +46,7 @@ const CustomTreemap = (props) => {
                 >
                     {value + "%"}
                 </text>
-            </>
+            </svg>
         )
     };
 
@@ -63,7 +66,7 @@ const CustomTreemap = (props) => {
                         strokeWidth: 0
                     }}
                 />
-                {_renderContent(props)}
+                {renderContent(props)}
             </g>
         );
     };

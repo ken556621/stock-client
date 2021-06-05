@@ -180,7 +180,6 @@ const IndustryListSection = () => {
                         inputRoot: classes.customSelectInputRoot,
                         selected: classes.statusSelected
                     }}
-                    // renderValue={renderValue}
                     selected={targetIndustry}
                     list={formatDropdownList(industrySchema)}
                     onChange={handleEditDone}
