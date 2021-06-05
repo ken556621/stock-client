@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
+import uniqBy from "lodash/uniqBy";
 
 import { makeStyles } from "@material-ui/core/styles";
 import ArtTrackIcon from '@material-ui/icons/ArtTrack';
 
 import CustomSelect from "@/components/searchInput/CustomSelect";
+import CustomTreemap from "@/components/charts/CustomTreemap";
 
 import {
-    getIndustryVolumn
+    getAllIndustryList,
+    getAllGrossMargin
 } from "@/api/individualStock";
 
 import {
     industrySchema
-} from "@/helper/format";
+} from "@/helper/stockSchema";
 
 
 const useIndustryListSectionStyles = makeStyles((theme) => ({
@@ -63,13 +66,48 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
 const IndustryListSection = () => {
     const classes = useIndustryListSectionStyles();
 
-    const [targetIndustry, setTargetIndustry] = useState("水泥");
+    const [allGrossMargin, setAllGrossMargin] = useState([]);
+    const [allIndustryList, setAllIndustryList] = useState([]);
+    const [targetIndustry, setTargetIndustry] = useState("01");
     const [isLoading, setIsLoading] = useState(false);
 
+
+    const fetchAllIndustryList = async () => {
+        setIsLoading(true);
+        const postData = {
+            body: {
+                industryId: targetIndustry
+            }
+        };
+
+        const res = await getAllIndustryList(postData);
+
+        if (!res.isSuccess) {
+            setIsLoading(false);
+            return
+        }
+
+        setIsLoading(false);
+        setAllIndustryList(res.data);
+    };
+
+    const fetchAllGrossMargin = async () => {
+        setIsLoading(true);
+        const res = await getAllGrossMargin();
+
+        if (!res.isSuccess) {
+            setIsLoading(false);
+            return
+        }
+
+        setIsLoading(false);
+        setAllGrossMargin(res.data);
+    };
+
     const formatDropdownList = (data) => {
-        return data.map(item => {
+        return data.map((item, index) => {
             return {
-                value: item,
+                value: (index + 1) < 10 ? "0" + (index + 1) : String(index + 1),
                 label: item
             }
         })
@@ -81,13 +119,51 @@ const IndustryListSection = () => {
         setTargetIndustry(value)
     };
 
+    const filterTargetStock = () => {
+        return allGrossMargin.filter(({ stockNo }) => allIndustryList.some(({ stockId }) => stockNo === stockId))
+    };
+
+    const formatTreemapData = (data) => {
+        let result = [];
+
+        data.map(item => {
+            allIndustryList.forEach(industry => {
+                if (industry.stockId === item.stockNo) {
+                    result.push({
+                        stockId: item.stockNo,
+                        name: industry.stockName,
+                        grossMargin: Number(((item.grossProfit / item.revenue) * 100).toFixed(2))
+                    })
+                }
+            })
+        })
+
+        return result
+    };
+
+    const uniqTwoSeasonGrossProfit = (data) => {
+        return uniqBy(data, ele => {
+            return ele.stockNo
+        })
+    };
+
+    useEffect(() => {
+        fetchAllIndustryList()
+    }, [targetIndustry])
+
+    useEffect(() => {
+        fetchAllGrossMargin()
+    }, [])
+
+    const filterTreemapData = formatTreemapData(uniqTwoSeasonGrossProfit(filterTargetStock()));
+
     return (
         <div className={classes.container}>
             <div className={classes.titleWrapper}>
                 <div className={classes.title}>
                     <ArtTrackIcon className={classes.icon} />
                     <div className={classes.titleWord}>
-                        類股組成
+                        類股組成(依最近一季毛利率排名)
                 </div>
                 </div>
                 <CustomSelect
@@ -102,6 +178,10 @@ const IndustryListSection = () => {
                     onChange={handleEditDone}
                 />
             </div>
+            <CustomTreemap
+                data={filterTreemapData}
+                dataKey="grossMargin"
+            />
         </div>
     )
 };

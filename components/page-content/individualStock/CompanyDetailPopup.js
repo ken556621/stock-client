@@ -22,7 +22,7 @@ import {
 
 import {
     industryToPostId
-} from "@/helper/format";
+} from "@/helper/stockSchema";
 
 
 const useCompanyDetailPopupStyles = makeStyles((theme) => ({
