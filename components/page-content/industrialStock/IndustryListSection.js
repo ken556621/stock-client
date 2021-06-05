@@ -60,6 +60,11 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
             borderLeft: "1px solid #eee",
             paddingLeft: theme.spacing(2)
         }
+    },
+    subTitleWord: {
+        color: "#1a1919",
+        fontSize: ".8rem",
+        alignSelf: "flex-end"
     }
 }));
 
@@ -163,8 +168,11 @@ const IndustryListSection = () => {
                 <div className={classes.title}>
                     <ArtTrackIcon className={classes.icon} />
                     <div className={classes.titleWord}>
-                        類股組成(依最近一季毛利率排名)
-                </div>
+                        類股組成
+                    </div>
+                    <div className={classes.subTitleWord}>
+                        (依最近一季毛利率排名)
+                    </div>
                 </div>
                 <CustomSelect
                     classes={{
