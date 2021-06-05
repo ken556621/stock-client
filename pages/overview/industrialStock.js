@@ -4,7 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBar from "@/components/navBar/NavigationBar";
 import VolumnHistorySection from "@/components/page-content/industrialStock/VolumnHistorySection";
+import IndustryListSection from "@/components/page-content/industrialStock/IndustryListSection";
 import Footer from "@/components/footer/Footer";
+
 
 const useMacroEconomicStyles = makeStyles((theme) => ({
     container: {
@@ -24,6 +26,7 @@ const industrialStock = () => {
             <NavigationBar />
             <div className={classes.content}>
                 <VolumnHistorySection />
+                <IndustryListSection />
             </div>
             <Footer />
         </div>

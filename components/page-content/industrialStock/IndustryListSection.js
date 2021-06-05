@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import ShowChartIcon from '@material-ui/icons/ShowChart';
+import ArtTrackIcon from '@material-ui/icons/ArtTrack';
 
 import CustomSelect from "@/components/searchInput/CustomSelect";
-import CustomArea from "@/components/charts/CustomArea";
 
 import {
     getIndustryVolumn
 } from "@/api/individualStock";
 
+import {
+    industrySchema
+} from "@/helper/format";
 
-const useMacroEconomicStyles = makeStyles((theme) => ({
+
+const useIndustryListSectionStyles = makeStyles((theme) => ({
     container: {
-        marginBottom: theme.spacing(4),
         padding: theme.spacing(4, 6),
         boxShadow: "0px 2px 14px 0 rgb(69 20 229 / 10%)",
         borderRadius: 15
@@ -58,43 +60,17 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
     }
 }));
 
-const VolumnHistorySection = () => {
-    const classes = useMacroEconomicStyles();
+const IndustryListSection = () => {
+    const classes = useIndustryListSectionStyles();
 
-    const [industryVolumnList, setIndustryVolumnList] = useState([]);
-    const [selectedIndustrailList, setSelectedIndustrailList] = useState([
-        "電機機械類指數",
-        "半導體類指數",
-        "電腦及週邊設備類指數",
-        "光電類指數",
-        "鋼鐵類指數",
-        "電子零組件類指數"
-    ]);
-
+    const [targetIndustry, setTargetIndustry] = useState("水泥");
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchIndustryVolumnList = async () => {
-        setIsLoading(true);
-        const res = await getIndustryVolumn();
-
-        if (!res.isSuccess) {
-            setIsLoading(false);
-            return
-        }
-
-        setIndustryVolumnList(res.data);
-        setIsLoading(false);
-    };
-
-    const filterUserSelected = (data) => {
-        return data.filter(item => selectedIndustrailList.includes(item.name))
-    };
-
     const formatDropdownList = (data) => {
-        return data.slice(0, 30).map(item => {
+        return data.map(item => {
             return {
-                value: item.name,
-                label: item.name
+                value: item,
+                label: item
             }
         })
     };
@@ -102,29 +78,17 @@ const VolumnHistorySection = () => {
     const handleEditDone = (event) => {
         const value = event.target.value;
 
-        setSelectedIndustrailList(value)
+        setTargetIndustry(value)
     };
-
-    const renderValue = (value) => (
-        <span className={classes.placeholder}>
-            增加類股
-        </span>
-    );
-
-    useEffect(() => {
-        fetchIndustryVolumnList();
-    }, [])
-
-    const filterUserSelectedData = filterUserSelected(industryVolumnList);
 
     return (
         <div className={classes.container}>
             <div className={classes.titleWrapper}>
                 <div className={classes.title}>
-                    <ShowChartIcon className={classes.icon} />
+                    <ArtTrackIcon className={classes.icon} />
                     <div className={classes.titleWord}>
-                        類股成交量
-                    </div>
+                        類股組成
+                </div>
                 </div>
                 <CustomSelect
                     classes={{
@@ -132,20 +96,14 @@ const VolumnHistorySection = () => {
                         inputRoot: classes.customSelectInputRoot,
                         selected: classes.statusSelected
                     }}
-                    renderValue={renderValue}
-                    selected={selectedIndustrailList}
-                    list={formatDropdownList(industryVolumnList)}
+                    // renderValue={renderValue}
+                    selected={targetIndustry}
+                    list={formatDropdownList(industrySchema)}
                     onChange={handleEditDone}
-                    multiple={true}
                 />
             </div>
-            <CustomArea
-                data={filterUserSelectedData}
-                industrialList={selectedIndustrailList}
-                isLoading={isLoading}
-            />
         </div>
     )
 };
 
-export default VolumnHistorySection;
+export default IndustryListSection;

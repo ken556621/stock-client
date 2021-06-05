@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Popover from "@material-ui/core/Popover";
@@ -13,10 +14,15 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import PlaceIcon from '@material-ui/icons/Place';
 
 import MiniLine from "@/components/charts/MiniLine";
+import StatusImg from "@/components/table/StatusImg";
 
 import {
     getCompanyDetail
 } from "@/api/individualStock";
+
+import {
+    industryToPostId
+} from "@/helper/format";
 
 
 const useCompanyDetailPopupStyles = makeStyles((theme) => ({
@@ -55,6 +61,15 @@ const useCompanyDetailPopupStyles = makeStyles((theme) => ({
         wordBreak: "keep-all",
         color: "#0a2f5c"
     },
+    industryTitle: {
+        cursor: "pointer",
+        color: "#285a99",
+        borderRadius: 4,
+        padding: theme.spacing(0, 2),
+        "&:hover": {
+            backgroundColor: "#eee"
+        }
+    },
     word: {
         color: "#285a99"
     }
@@ -92,6 +107,8 @@ const CompanyDetailPopup = (props) => {
         stockId = ""
     } = props;
 
+    const router = useRouter();
+
     const classes = useCompanyDetailPopupStyles();
 
     const [companyInfo, setCompanyInfo] = useState({});
@@ -99,6 +116,7 @@ const CompanyDetailPopup = (props) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchCompanyDetail = async () => {
+        setIsLoading(true);
         const postData = {
             body: {
                 stockId
@@ -120,6 +138,30 @@ const CompanyDetailPopup = (props) => {
         setAnchorEl(null);
     };
 
+    const handleClickIndustryTitle = (value) => {
+        const industryId = industryToPostId(value);
+        router.push(`/overview/industrialStock?industryId=${industryId}`)
+    };
+
+    const renderIndustryTitle = (item, index) => {
+        if (categorySchema[index]?.title === "產業別") {
+            return (
+                <div
+                    className={classes.industryTitle}
+                    onClick={() => handleClickIndustryTitle(companyInfo[item])}
+                >
+                    {companyInfo[item].trim() || "暫無資料"}
+                </div>
+            )
+        };
+
+        return (
+            <div className={classes.word}>
+                {companyInfo[item].trim() || "暫無資料"}
+            </div>
+        )
+    };
+
     const CustomListItem = () => {
         if (isLoading) return (
             <StatusImg
@@ -139,9 +181,7 @@ const CompanyDetailPopup = (props) => {
                             <div className={classes.category}>
                                 {categorySchema[index].title + ":"}
                             </div>
-                            <div className={classes.word}>
-                                {companyInfo[item]}
-                            </div>
+                            {renderIndustryTitle(item, index)}
                         </div>
                     }
                 />
