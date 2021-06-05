@@ -15,7 +15,7 @@ const CustomTreemap = (props) => {
     } = props;
 
     const renderContent = (props) => {
-        const { x, y, width, height, name, value } = props;
+        const { x, y, width, height, name, stockId, value } = props;
 
         const fontSize = width * 0.1 < 14 || height * 0.1 < 14 ? 14 : (width + height) / 2 * 0.1;
         const fontX = x + width / 2;
@@ -24,7 +24,7 @@ const CustomTreemap = (props) => {
         return (
             <svg
                 style={{ cursor: "pointer" }}
-                onClick={() => { console.log("qqq========") }}
+                onClick={() => { console.log(stockId) }}
             >
                 <text
                     x={fontX}
@@ -78,7 +78,7 @@ const CustomTreemap = (props) => {
     }
 
     return (
-        <div style={{ height: 500, position: "relative" }}>
+        <div style={{ height: 500, position: "relative", borderRadius: 20 }}>
             <div
                 style={{
                     width: "100%",

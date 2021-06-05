@@ -135,6 +135,7 @@ const IndustryListSection = () => {
             allIndustryList.forEach(industry => {
                 if (industry.stockId === item.stockNo) {
                     result.push({
+                        ...item,
                         stockId: item.stockNo,
                         name: industry.stockName,
                         grossMargin: Number(((item.grossProfit / item.revenue) * 100).toFixed(2))
