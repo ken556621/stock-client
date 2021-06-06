@@ -130,8 +130,8 @@ const IndustryListSection = () => {
     const formatDropdownList = (data) => {
         return data.map((item, index) => {
             return {
-                value: (index + 1) < 10 ? "0" + (index + 1) : String(index + 1),
-                label: item
+                value: item.value,
+                label: item.name
             }
         })
     };

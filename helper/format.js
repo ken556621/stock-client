@@ -7,7 +7,7 @@ export const industryToPostId = (industry) => {
 
     industrySchema.forEach((item, index) => {
         if (industry.includes(item)) {
-            postId = index
+            postId = item.value
         }
     })
 

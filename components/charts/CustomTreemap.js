@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import {
     Treemap,
     ResponsiveContainer
 } from "recharts";
 
+import CompanyDetailPopup from "@/components/page-content/individualStock/CompanyDetailPopup";
 import defaultColors from "@/components/charts/defaultColor";
 import StatusImg from "@/components/table/StatusImg";
 
@@ -14,6 +16,12 @@ const CustomTreemap = (props) => {
         isLoading = false
     } = props;
 
+    const [targetStock, setTargetStock] = useState("");
+
+    const handleClickTreemap = (stockId) => {
+        setTargetStock(stockId)
+    };
+
     const renderContent = (props) => {
         const { x, y, width, height, name, stockId, value } = props;
 
@@ -24,7 +32,7 @@ const CustomTreemap = (props) => {
         return (
             <svg
                 style={{ cursor: "pointer" }}
-                onClick={() => { console.log(stockId) }}
+                onClick={() => handleClickTreemap(stockId)}
             >
                 <text
                     x={fontX}
@@ -111,6 +119,9 @@ const CustomTreemap = (props) => {
                     />
                 </ResponsiveContainer>
             </div>
+            <CompanyDetailPopup
+                stockId={targetStock}
+            />
         </div>
     )
 }
