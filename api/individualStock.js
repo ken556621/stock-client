@@ -25,3 +25,7 @@ export const getYearlyPriceVolumn = ({ body }) => {
 export const getAllGrossMargin = () => {
     return request.get(`/${path}/all-gross-margin`);
 }
+
+export const getAllPriceEarnRatio = () => {
+    return request.get(`/${path}/all-price-earn-ratio`);
+}

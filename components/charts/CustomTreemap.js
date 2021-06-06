@@ -77,6 +77,18 @@ const CustomTreemap = (props) => {
         )
     }
 
+    if (!data.length) {
+        return (
+            <StatusImg />
+        )
+    }
+
+    if (data.every(item => !item[dataKey])) {
+        return (
+            <StatusImg />
+        )
+    }
+
     return (
         <div style={{ height: 500, position: "relative", borderRadius: 20 }}>
             <div

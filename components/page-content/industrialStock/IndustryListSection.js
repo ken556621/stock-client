@@ -1,36 +1,63 @@
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import uniqBy from "lodash/uniqBy";
 
 import { makeStyles } from "@material-ui/core/styles";
-import ArtTrackIcon from '@material-ui/icons/ArtTrack';
+import ArtTrackIcon from "@material-ui/icons/ArtTrack";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 import CustomSelect from "@/components/searchInput/CustomSelect";
 import CustomTreemap from "@/components/charts/CustomTreemap";
 
 import {
-    getAllIndustryList,
-    getAllGrossMargin
+    getAllIndustryList
 } from "@/api/individualStock";
 
 import {
     industrySchema
 } from "@/helper/stockSchema";
 
+import {
+    reqAllStockInfoAction
+} from "@/redux/actions/stock";
+
+
+const tabSchema = [
+    {
+        label: "毛利率",
+        value: "grossMargin"
+    },
+    {
+        label: "營益率",
+        value: "operatingMargin"
+    },
+    {
+        label: "淨利率",
+        value: "netInterestRate"
+    },
+    {
+        label: "本益比",
+        value: "priceToEarningRatio"
+    }
+];
 
 const useIndustryListSectionStyles = makeStyles((theme) => ({
     container: {
         padding: theme.spacing(4, 6),
         boxShadow: "0px 2px 14px 0 rgb(69 20 229 / 10%)",
-        borderRadius: 15
+        borderRadius: 15,
+        minHeight: 300
     },
-    titleWrapper: {
+    titleAndSelectWrapper: {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: theme.spacing(4)
+        marginBottom: theme.spacing(6)
     },
     dropdownRoot: {
-        width: 200
+        width: 200,
+        marginLeft: theme.spacing(4)
     },
     customSelectInputRoot: {
         backgroundColor: "#f3f3f3",
@@ -42,7 +69,11 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
             color: "#3a3a3a"
         }
     },
-    title: {
+    titleWrapper: {
+        display: "flex",
+        alignItems: "center"
+    },
+    selectWrapper: {
         display: "flex",
         alignItems: "center"
     },
@@ -60,20 +91,20 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
             borderLeft: "1px solid #eee",
             paddingLeft: theme.spacing(2)
         }
-    },
-    subTitleWord: {
-        color: "#1a1919",
-        fontSize: ".8rem",
-        alignSelf: "flex-end"
     }
 }));
 
 const IndustryListSection = () => {
+    const dispatch = useDispatch();
+
+    const { allStockInfo } = useSelector(state => state.stock);
+
     const classes = useIndustryListSectionStyles();
 
-    const [allGrossMargin, setAllGrossMargin] = useState([]);
     const [allIndustryList, setAllIndustryList] = useState([]);
     const [targetIndustry, setTargetIndustry] = useState("01");
+
+    const [tabIndex, setTabIndex] = useState(2);
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -96,19 +127,6 @@ const IndustryListSection = () => {
         setAllIndustryList(res.data);
     };
 
-    const fetchAllGrossMargin = async () => {
-        setIsLoading(true);
-        const res = await getAllGrossMargin();
-
-        if (!res.isSuccess) {
-            setIsLoading(false);
-            return
-        }
-
-        setIsLoading(false);
-        setAllGrossMargin(res.data);
-    };
-
     const formatDropdownList = (data) => {
         return data.map((item, index) => {
             return {
@@ -125,7 +143,7 @@ const IndustryListSection = () => {
     };
 
     const filterTargetStock = () => {
-        return allGrossMargin.filter(({ stockNo }) => allIndustryList.some(({ stockId }) => stockNo === stockId))
+        return allStockInfo.filter(({ stockNo }) => allIndustryList.some(({ stockId }) => stockNo === stockId))
     };
 
     const formatTreemapData = (data) => {
@@ -138,7 +156,9 @@ const IndustryListSection = () => {
                         ...item,
                         stockId: item.stockNo,
                         name: industry.stockName,
-                        grossMargin: Number(((item.grossProfit / item.revenue) * 100).toFixed(2))
+                        grossMargin: Number(((item.grossProfit / item.revenue) * 100).toFixed(2)),
+                        netInterestRate: Number((item.nopat / item.revenue * 100).toFixed(2)),
+                        operatingMargin: Number((item.netOperatingProfit / item.revenue * 100).toFixed(2))
                     })
                 }
             })
@@ -153,42 +173,63 @@ const IndustryListSection = () => {
         })
     };
 
+    const handleChangeTab = (event, newValue) => {
+        setTabIndex(newValue);
+    };
+
     useEffect(() => {
         fetchAllIndustryList()
     }, [targetIndustry])
 
     useEffect(() => {
-        fetchAllGrossMargin()
+        dispatch(reqAllStockInfoAction())
     }, [])
+
+    const CustomTabs = () => {
+        return (
+            <Tabs
+                value={tabIndex}
+                indicatorColor="primary"
+                textColor="primary"
+                onChange={handleChangeTab}
+            >
+                {
+                    tabSchema.map(tab => (
+                        <Tab label={tab.label} />
+                    ))
+                }
+            </Tabs>
+        )
+    };
 
     const filterTreemapData = formatTreemapData(uniqTwoSeasonGrossProfit(filterTargetStock()));
 
     return (
         <div className={classes.container}>
-            <div className={classes.titleWrapper}>
-                <div className={classes.title}>
+            <div className={classes.titleAndSelectWrapper}>
+                <div className={classes.titleWrapper}>
                     <ArtTrackIcon className={classes.icon} />
                     <div className={classes.titleWord}>
                         類股組成
                     </div>
-                    <div className={classes.subTitleWord}>
-                        (依最近一季毛利率排名)
-                    </div>
                 </div>
-                <CustomSelect
-                    classes={{
-                        root: classes.dropdownRoot,
-                        inputRoot: classes.customSelectInputRoot,
-                        selected: classes.statusSelected
-                    }}
-                    selected={targetIndustry}
-                    list={formatDropdownList(industrySchema)}
-                    onChange={handleEditDone}
-                />
+                <div className={classes.selectWrapper}>
+                    <CustomTabs />
+                    <CustomSelect
+                        classes={{
+                            root: classes.dropdownRoot,
+                            inputRoot: classes.customSelectInputRoot,
+                            selected: classes.statusSelected
+                        }}
+                        selected={targetIndustry}
+                        list={formatDropdownList(industrySchema)}
+                        onChange={handleEditDone}
+                    />
+                </div>
             </div>
             <CustomTreemap
                 data={filterTreemapData}
-                dataKey="grossMargin"
+                dataKey={tabSchema[tabIndex].value}
             />
         </div>
     )
