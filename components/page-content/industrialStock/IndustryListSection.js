@@ -4,6 +4,8 @@ import uniqBy from "lodash/uniqBy";
 
 import { makeStyles } from "@material-ui/core/styles";
 import ArtTrackIcon from "@material-ui/icons/ArtTrack";
+import BarChartIcon from '@material-ui/icons/BarChart';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
@@ -73,6 +75,11 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
     titleWrapper: {
         display: "flex",
         alignItems: "center"
+    },
+    subTitleWrapper: {
+        display: "flex",
+        alignItems: "center",
+        marginBottom: theme.spacing(6)
     },
     selectWrapper: {
         display: "flex",
@@ -209,13 +216,15 @@ const IndustryListSection = () => {
         <div className={classes.container}>
             <div className={classes.titleAndSelectWrapper}>
                 <div className={classes.titleWrapper}>
-                    <ArtTrackIcon className={classes.icon} />
+                    <BarChartIcon className={classes.icon} />
                     <div className={classes.titleWord}>
                         類股組成
                     </div>
+                    <span>
+                        (基本面合併比較)
+                    </span>
                 </div>
                 <div className={classes.selectWrapper}>
-                    <CustomTabs />
                     <CustomSelect
                         classes={{
                             root: classes.dropdownRoot,
@@ -228,13 +237,27 @@ const IndustryListSection = () => {
                     />
                 </div>
             </div>
-            <CustomTreemap
-                data={filterTreemapData}
-                dataKey={matrixSchema[tabIndex].value}
-            />
             <CustomBar
                 data={filterTreemapData}
                 matrixSchema={matrixSchema}
+            />
+            <div className={classes.titleAndSelectWrapper}>
+                <div className={classes.titleWrapper}>
+                    <DashboardIcon className={classes.icon} />
+                    <div className={classes.titleWord}>
+                        類股組成
+                    </div>
+                    <span>
+                        (基本面分別比較)
+                    </span>
+                </div>
+                <div className={classes.selectWrapper}>
+                    <CustomTabs />
+                </div>
+            </div>
+            <CustomTreemap
+                data={filterTreemapData}
+                dataKey={matrixSchema[tabIndex].value}
             />
         </div>
     )
