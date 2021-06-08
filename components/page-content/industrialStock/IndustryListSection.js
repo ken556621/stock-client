@@ -56,7 +56,10 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: theme.spacing(6)
+        marginBottom: theme.spacing(6),
+        "&:not(&:first-of-type)": {
+            margin: theme.spacing(6, 0)
+        }
     },
     dropdownRoot: {
         width: 200,
@@ -75,11 +78,6 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
     titleWrapper: {
         display: "flex",
         alignItems: "center"
-    },
-    subTitleWrapper: {
-        display: "flex",
-        alignItems: "center",
-        marginBottom: theme.spacing(6)
     },
     selectWrapper: {
         display: "flex",
