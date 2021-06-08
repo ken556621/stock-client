@@ -9,6 +9,7 @@ import Tab from "@material-ui/core/Tab";
 
 import CustomSelect from "@/components/searchInput/CustomSelect";
 import CustomTreemap from "@/components/charts/CustomTreemap";
+import CustomBar from "@/components/charts/CustomBar";
 
 import {
     getAllIndustryList
@@ -23,7 +24,7 @@ import {
 } from "@/redux/actions/stock";
 
 
-const tabSchema = [
+const matrixSchema = [
     {
         label: "毛利率",
         value: "grossMargin"
@@ -194,7 +195,7 @@ const IndustryListSection = () => {
                 onChange={handleChangeTab}
             >
                 {
-                    tabSchema.map(tab => (
+                    matrixSchema.map(tab => (
                         <Tab label={tab.label} />
                     ))
                 }
@@ -229,7 +230,11 @@ const IndustryListSection = () => {
             </div>
             <CustomTreemap
                 data={filterTreemapData}
-                dataKey={tabSchema[tabIndex].value}
+                dataKey={matrixSchema[tabIndex].value}
+            />
+            <CustomBar
+                data={filterTreemapData}
+                matrixSchema={matrixSchema}
             />
         </div>
     )
