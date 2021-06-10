@@ -95,6 +95,10 @@ const VolumnRankSection = () => {
         setTargetStock(stockId);
     };
 
+    const handleClosePopup = () => {
+        setTargetStock(null);
+    };
+
     const tableColumn = [
         {
             id: "rank",
@@ -216,6 +220,7 @@ const VolumnRankSection = () => {
             />
             <CompanyDetailPopup
                 stockId={targetStock}
+                handleClosePopup={handleClosePopup}
             />
         </div>
     )

@@ -104,7 +104,8 @@ const categorySchema = [
 
 const CompanyDetailPopup = (props) => {
     const {
-        stockId = ""
+        stockId = "",
+        handleClosePopup = null
     } = props;
 
     const router = useRouter();
@@ -136,6 +137,7 @@ const CompanyDetailPopup = (props) => {
 
     const handleClose = () => {
         setAnchorEl(null);
+        handleClosePopup && handleClosePopup()
     };
 
     const handleClickIndustryTitle = (value) => {
