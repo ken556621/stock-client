@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,7 +10,7 @@ import {
 
 import { BasicTable } from "@/components/table/Table";
 import CompanyDetailPopup from "@/components/page-content/individualStock/CompanyDetailPopup";
-
+import SearchBar from "@/components/searchInput/SearchBar";
 
 
 const useMacroEconomicStyles = makeStyles((theme) => ({
@@ -19,6 +18,13 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
         padding: theme.spacing(4, 6),
         boxShadow: "0px 2px 14px 0 rgb(69 20 229 / 10%)",
         borderRadius: 15
+    },
+    titleFilterWrapper: {
+        display: "flex",
+        justifyContent: "space-between"
+    },
+    inputRoot: {
+        width: 200
     },
     titleWrapper: {
         display: "flex",
@@ -62,6 +68,7 @@ const VolumnRankSection = () => {
 
     const [volumnRankList, setVolumnRankList] = useState([]);
     const [targetStock, setTargetStock] = useState("");
+    const [filterNumber, setFilterNumber] = useState(null);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -97,6 +104,17 @@ const VolumnRankSection = () => {
 
     const handleClosePopup = () => {
         setTargetStock(null);
+    };
+
+    const handleSearchBarChange = (e) => {
+        const value = e.target.value;
+
+        if (!value) {
+            setFilterNumber(null)
+            return
+        }
+
+        setFilterNumber(value);
     };
 
     const tableColumn = [
@@ -191,18 +209,47 @@ const VolumnRankSection = () => {
                 )
             }
         }
-    ]
+    ];
 
     useEffect(() => {
         fetchVolumnRankList()
-    }, [])
+    }, []);
+
+    const filterVolumnRankList = volumnRankList.filter(item => {
+        // 若沒輸入則都不 filter
+        if (!filterNumber) return true
+
+        const isUpper = item.percentage.split(",")[0] === "+"
+        let formatedPercentage = isUpper ?
+            parseInt(item.percentage.split(",")[1], 10) :
+            -parseInt(item.percentage.split(",")[1], 10)
+
+        if (isNaN(formatedPercentage)) {
+            formatedPercentage = 0
+        }
+
+        return formatedPercentage > filterNumber
+    });
 
     return (
         <div className={classes.container}>
-            <div className={classes.titleWrapper}>
-                <ShowChartIcon className={classes.icon} />
-                <div className={classes.title}>
-                    台股排行榜
+            <div className={classes.titleFilterWrapper}>
+                <div className={classes.titleWrapper}>
+                    <ShowChartIcon className={classes.icon} />
+                    <div className={classes.title}>
+                        台股排行榜
+                    </div>
+                </div>
+                <div>
+                    <SearchBar
+                        classes={{
+                            inputRoot: classes.inputRoot
+                        }}
+                        onChange={handleSearchBarChange}
+                        inputType="filter"
+                        type="number"
+                        placeholder="篩選漲跌幅度"
+                    />
                 </div>
             </div>
             <BasicTable
@@ -213,7 +260,7 @@ const VolumnRankSection = () => {
                     tableBody: classes.tableBody
                 }}
                 isLoading={isLoading}
-                data={volumnRankList}
+                data={filterVolumnRankList}
                 columns={tableColumn}
                 pagination
                 defaultImgWord={"No Data Found"}

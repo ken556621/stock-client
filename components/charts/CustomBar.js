@@ -11,10 +11,20 @@ import {
     ResponsiveContainer
 } from "recharts";
 
+import { makeStyles } from "@material-ui/core/styles";
+
 import CompanyDetailPopup from "@/components/page-content/individualStock/CompanyDetailPopup";
 import defaultColors from "@/components/charts/defaultColor";
 import StatusImg from "@/components/table/StatusImg";
 
+
+const useCustomBarStyles = makeStyles((theme) => ({
+    container: {
+        "& .recharts-surface tspan": {
+            color: "red"
+        }
+    }
+}));
 
 const CustomBar = (props) => {
     const {
@@ -22,6 +32,8 @@ const CustomBar = (props) => {
         matrixSchema = [],
         isLoading = false
     } = props;
+
+    const classes = useCustomBarStyles();
 
     const [targetStock, setTargetStock] = useState("");
 
@@ -99,7 +111,7 @@ const CustomBar = (props) => {
     }
 
     return (
-        <div style={{ height: 500, position: "relative", borderRadius: 20 }}>
+        <div className={classes.container} style={{ height: 500, position: "relative", borderRadius: 20 }}>
             <div
                 style={{
                     width: "100%",
@@ -122,7 +134,11 @@ const CustomBar = (props) => {
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" onClick={handleClickBar} />
+
+                        <XAxis
+                            dataKey="name"
+                            onClick={handleClickBar}
+                        />
                         <YAxis />
                         <Tooltip />
                         <Legend

@@ -7,6 +7,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import SearchIcon from "@material-ui/icons/Search";
 import CancelIcon from "@material-ui/icons/Cancel";
+import FilterListIcon from '@material-ui/icons/FilterList';
 
 import clsx from "clsx";
 
@@ -102,6 +103,7 @@ const SearchBar = (props) => {
         classes = {},
         label = null,
         helperText = "",
+        inputType = "search", // search, filter
         ...others
     } = props;
 
@@ -145,7 +147,16 @@ const SearchBar = (props) => {
                     onClick={handleClearKeyword}
                 />
             )
-        } else {
+        }
+        else if (inputType === "filter") {
+            return (
+                <FilterListIcon
+                    {...props}
+                    classes={{ root: baseInputWrapClasses.icon }}
+                />
+            )
+        }
+        else {
             return (
                 <SearchIcon
                     {...props}
