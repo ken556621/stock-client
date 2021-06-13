@@ -17,6 +17,9 @@ import CompanyDetailPopup from "@/components/page-content/individualStock/Compan
 import defaultColors from "@/components/charts/defaultColor";
 import StatusImg from "@/components/table/StatusImg";
 
+import {
+    splitData
+} from "@/helper/format";
 
 const useCustomBarStyles = makeStyles((theme) => ({
     container: {
@@ -30,7 +33,8 @@ const CustomBar = (props) => {
     const {
         data = [],
         matrixSchema = [],
-        isLoading = false
+        isLoading = false,
+        isShowLastData = false
     } = props;
 
     const classes = useCustomBarStyles();
@@ -52,6 +56,20 @@ const CustomBar = (props) => {
         })
 
         return stockId
+    };
+
+    const filterData = (data) => {
+        const seperatedData = splitData(data, "priceToEarningRatio");
+        const firstThirdData = seperatedData[0];
+        const lastData = seperatedData[1];
+
+        if (data.length <= 10) {
+            return data
+        }
+        if (isShowLastData) {
+            return lastData
+        }
+        return firstThirdData
     };
 
     const renderCustomizedLabel = (props) => {
@@ -110,6 +128,8 @@ const CustomBar = (props) => {
         )
     }
 
+    const filteredData = filterData(data);
+
     return (
         <div className={classes.container} style={{ height: 500, position: "relative", borderRadius: 20 }}>
             <div
@@ -125,7 +145,7 @@ const CustomBar = (props) => {
                     <BarChart
                         width={500}
                         height={300}
-                        data={data}
+                        data={filteredData}
                         margin={{
                             top: 5,
                             right: 30,

@@ -75,10 +75,10 @@ const VolumnRankSection = () => {
     const [volumnRankList, setVolumnRankList] = useState([]);
     const [targetStock, setTargetStock] = useState("");
     const [filterNumber, setFilterNumber] = useState(null);
-    const [isShowLastData, setIsShowLastData] = useState(false);
 
     const [industryVolumnList, setIndustryVolumnList] = useState([]);
 
+    const [isShowLastData, setIsShowLastData] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchVolumnRankList = async () => {

@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import uniqBy from "lodash/uniqBy";
 
 import { makeStyles } from "@material-ui/core/styles";
-import ArtTrackIcon from "@material-ui/icons/ArtTrack";
 import BarChartIcon from '@material-ui/icons/BarChart';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
 
 import CustomSelect from "@/components/searchInput/CustomSelect";
 import CustomTreemap from "@/components/charts/CustomTreemap";
@@ -63,7 +64,7 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
     },
     dropdownRoot: {
         width: 200,
-        marginLeft: theme.spacing(4)
+        marginRight: theme.spacing(4)
     },
     customSelectInputRoot: {
         backgroundColor: "#f3f3f3",
@@ -111,6 +112,7 @@ const IndustryListSection = () => {
     const [targetIndustry, setTargetIndustry] = useState("01");
 
     const [tabIndex, setTabIndex] = useState(2);
+    const [isShowLastData, setIsShowLastData] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -183,6 +185,10 @@ const IndustryListSection = () => {
         setTabIndex(newValue);
     };
 
+    const handleSwitchBtnChange = () => {
+        setIsShowLastData(!isShowLastData)
+    };
+
     useEffect(() => {
         fetchAllIndustryList()
     }, [targetIndustry])
@@ -233,11 +239,27 @@ const IndustryListSection = () => {
                         list={formatDropdownList(industrySchema)}
                         onChange={handleEditDone}
                     />
+                    {
+                        filterTreemapData.length > 10 && (
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        color="primary"
+                                        checked={isShowLastData}
+                                        onChange={handleSwitchBtnChange}
+                                    />
+                                }
+                                label="顯示後三分之二資料"
+                                labelPlacement="end"
+                            />
+                        )
+                    }
                 </div>
             </div>
             <CustomBar
                 data={filterTreemapData}
                 matrixSchema={matrixSchema}
+                isShowLastData={isShowLastData}
             />
             <div className={classes.titleAndSelectWrapper}>
                 <div className={classes.titleWrapper}>
