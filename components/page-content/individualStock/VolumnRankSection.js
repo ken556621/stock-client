@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import ShowChartIcon from "@material-ui/icons/ShowChart";
 import PieChartIcon from "@material-ui/icons/PieChart";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import {
     getVolumnRank,
@@ -24,7 +26,8 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
     },
     titleFilterWrapper: {
         display: "flex",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        margin: theme.spacing(6, 0)
     },
     inputRoot: {
         width: 200
@@ -72,6 +75,7 @@ const VolumnRankSection = () => {
     const [volumnRankList, setVolumnRankList] = useState([]);
     const [targetStock, setTargetStock] = useState("");
     const [filterNumber, setFilterNumber] = useState(null);
+    const [isShowLastData, setIsShowLastData] = useState(false);
 
     const [industryVolumnList, setIndustryVolumnList] = useState([]);
 
@@ -144,6 +148,10 @@ const VolumnRankSection = () => {
         }
 
         setFilterNumber(value);
+    };
+
+    const handleSwitchBtnChange = () => {
+        setIsShowLastData(!isShowLastData)
     };
 
     const tableColumn = [
@@ -303,10 +311,22 @@ const VolumnRankSection = () => {
                         類股排行組成
                     </div>
                 </div>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            color="primary"
+                            checked={isShowLastData}
+                            onChange={handleSwitchBtnChange}
+                        />
+                    }
+                    label="顯示後三分之二資料"
+                    labelPlacement="end"
+                />
             </div>
             <CustomPie
                 data={industryVolumnList}
                 dataKey="tradingVolume"
+                isShowLastData={isShowLastData}
             />
             <CompanyDetailPopup
                 stockId={targetStock}

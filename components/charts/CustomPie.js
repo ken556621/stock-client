@@ -25,7 +25,8 @@ const CustomPie = (props) => {
     const {
         data = [],
         dataKey = "value",
-        isLoading = false
+        isLoading = false,
+        isShowLastData = false
     } = props;
 
     const classes = useCustomPieStyles();
@@ -61,40 +62,25 @@ const CustomPie = (props) => {
 
     const renderFirstThirdData = () => (
         <Pie
-            data={firstThirdData}
+            data={isShowLastData ? lastData : firstThirdData}
             cx="50%"
             cy="50%"
             labelLine={false}
             label={renderCustomizedLabel}
-            outerRadius={80}
+            outerRadius={150}
             fill="#8884d8"
             dataKey={dataKey}
         >
-            {firstThirdData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={defaultColors[index % defaultColors.length]} />
-            ))}
-        </Pie>
-    );
-
-    const renderLastData = () => (
-        <Pie
-            data={lastData}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey={dataKey}
-        >
-            {firstThirdData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={defaultColors[index % defaultColors.length]} />
-            ))}
+            {
+                firstThirdData.map((entry, index) => (
+                    <Cell key={index} fill={defaultColors[index]} />
+                ))
+            }
         </Pie>
     );
 
     return (
-        <div className={classes.container} style={{ height: 300, position: "relative", borderRadius: 20 }}>
+        <div className={classes.container} style={{ height: 450, position: "relative", borderRadius: 20 }}>
             <div
                 style={{
                     width: "100%",
