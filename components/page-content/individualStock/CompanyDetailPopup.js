@@ -18,7 +18,7 @@ import StatusImg from "@/components/table/StatusImg";
 
 import {
     getCompanyDetail
-} from "@/api/individualStock";
+} from "@/api/stock";
 
 import {
     industryToPostId

@@ -8,7 +8,7 @@ import CustomArea from "@/components/charts/CustomArea";
 
 import {
     getIndustryVolumn
-} from "@/api/individualStock";
+} from "@/api/stock";
 
 
 const useMacroEconomicStyles = makeStyles((theme) => ({

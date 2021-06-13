@@ -15,7 +15,7 @@ import CustomBar from "@/components/charts/CustomBar";
 
 import {
     getAllIndustryList
-} from "@/api/individualStock";
+} from "@/api/stock";
 
 import {
     industrySchema

@@ -5,7 +5,7 @@ import merge from "lodash/merge";
 import {
     getAllGrossMargin,
     getAllPriceEarnRatio
-} from "@/api/individualStock";
+} from "@/api/stock";
 
 const {
     SET_ALL_STOCK_INFO

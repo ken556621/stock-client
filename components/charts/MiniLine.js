@@ -7,7 +7,7 @@ import {
 
 import {
     getYearlyPriceVolumn
-} from "@/api/individualStock";
+} from "@/api/stock";
 
 
 const MiniLine = (props) => {

@@ -2,15 +2,18 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 
 import { makeStyles } from "@material-ui/core/styles";
-import ShowChartIcon from '@material-ui/icons/ShowChart';
+import ShowChartIcon from "@material-ui/icons/ShowChart";
+import PieChartIcon from "@material-ui/icons/PieChart";
 
 import {
-    getVolumnRank
-} from "@/api/individualStock";
+    getVolumnRank,
+    getIndustryVolumn
+} from "@/api/stock";
 
 import { BasicTable } from "@/components/table/Table";
 import CompanyDetailPopup from "@/components/page-content/individualStock/CompanyDetailPopup";
 import SearchBar from "@/components/searchInput/SearchBar";
+import CustomPie from "@/components/charts/CustomPie";
 
 
 const useMacroEconomicStyles = makeStyles((theme) => ({
@@ -70,6 +73,8 @@ const VolumnRankSection = () => {
     const [targetStock, setTargetStock] = useState("");
     const [filterNumber, setFilterNumber] = useState(null);
 
+    const [industryVolumnList, setIndustryVolumnList] = useState([]);
+
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchVolumnRankList = async () => {
@@ -87,6 +92,21 @@ const VolumnRankSection = () => {
         setIsLoading(false);
     };
 
+    const fetchIndustryVolumnList = async () => {
+        setIsLoading(true);
+        const res = await getIndustryVolumn();
+
+        if (!res.isSuccess) {
+            setIsLoading(false);
+            return
+        }
+
+        const formatedPieData = formatPieData(res.data);
+
+        setIndustryVolumnList(formatedPieData);
+        setIsLoading(false);
+    };
+
     const formatTableData = (data) => {
         return data.map((item, index) => {
             return {
@@ -94,6 +114,15 @@ const VolumnRankSection = () => {
                 name: item.name + "," + item.id,
                 price: item.price,
                 percentage: item.percentage
+            }
+        })
+    };
+
+    const formatPieData = (data) => {
+        return data.map(item => {
+            return {
+                ...item,
+                tradingVolume: Number(item.tradingVolume.split(",").join(""))
             }
         })
     };
@@ -213,6 +242,7 @@ const VolumnRankSection = () => {
 
     useEffect(() => {
         fetchVolumnRankList()
+        fetchIndustryVolumnList()
     }, []);
 
     const filterVolumnRankList = volumnRankList.filter(item => {
@@ -224,6 +254,7 @@ const VolumnRankSection = () => {
             parseInt(item.percentage.split(",")[1], 10) :
             -parseInt(item.percentage.split(",")[1], 10)
 
+        // 若 per
         if (isNaN(formatedPercentage)) {
             formatedPercentage = 0
         }
@@ -264,6 +295,18 @@ const VolumnRankSection = () => {
                 columns={tableColumn}
                 pagination
                 defaultImgWord={"No Data Found"}
+            />
+            <div className={classes.titleFilterWrapper}>
+                <div className={classes.titleWrapper}>
+                    <PieChartIcon className={classes.icon} />
+                    <div className={classes.title}>
+                        類股排行組成
+                    </div>
+                </div>
+            </div>
+            <CustomPie
+                data={industryVolumnList}
+                dataKey="tradingVolume"
             />
             <CompanyDetailPopup
                 stockId={targetStock}
