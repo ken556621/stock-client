@@ -36,7 +36,7 @@ const useCustomBarStyles = makeStyles((theme) => ({
     }
 }));
 
-const CustomBar = (props) => {
+const IndustryCompositionBar = (props) => {
     const {
         data = [],
         matrixSchema = [],
@@ -174,4 +174,4 @@ const CustomBar = (props) => {
     )
 }
 
-export default CustomBar;
+export default IndustryCompositionBar;

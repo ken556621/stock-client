@@ -12,7 +12,7 @@ import Switch from "@material-ui/core/Switch";
 
 import CustomSelect from "@/components/searchInput/CustomSelect";
 import CustomTreemap from "@/components/charts/CustomTreemap";
-import CustomBar from "@/components/charts/CustomBar";
+import IndustryCompositionBar from "@/components/charts/IndustryCompositionBar";
 
 import {
     getAllIndustryList
@@ -277,7 +277,7 @@ const IndustryListSection = () => {
                     <SwitchBtn />
                 </div>
             </div>
-            <CustomBar
+            <IndustryCompositionBar
                 data={filterTreemapData}
                 matrixSchema={matrixSchema}
                 isShowFirstData={isShowFirstData}
