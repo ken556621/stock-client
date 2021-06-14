@@ -281,6 +281,7 @@ const IndustryListSection = () => {
                 data={filterTreemapData}
                 matrixSchema={matrixSchema}
                 isShowFirstData={isShowFirstData}
+                isLoading={isLoading}
             />
             <div className={classes.titleAndSelectWrapper}>
                 <div className={classes.titleWrapper}>
@@ -299,6 +300,7 @@ const IndustryListSection = () => {
             <CustomTreemap
                 data={filterTreemapData}
                 dataKey={matrixSchema[tabIndex].value}
+                isLoading={isLoading}
             />
         </div>
     )

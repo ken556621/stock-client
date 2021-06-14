@@ -19,6 +19,7 @@ import CustomPie from "@/components/charts/CustomPie";
 
 const useIndustryDailyRankStyles = makeStyles((theme) => ({
     container: {
+        marginBottom: theme.spacing(6),
         padding: theme.spacing(4, 6),
         boxShadow: "0px 2px 14px 0 rgb(69 20 229 / 10%)",
         borderRadius: 15
@@ -123,7 +124,7 @@ const IndustryDailyRank = () => {
                 <div className={classes.titleWrapper}>
                     <PieChartIcon className={classes.icon} />
                     <div className={classes.title}>
-                        類股排行組成
+                        每日類股成交組成
                     </div>
                 </div>
                 <FormControlLabel

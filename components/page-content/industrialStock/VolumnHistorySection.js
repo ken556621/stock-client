@@ -123,7 +123,7 @@ const VolumnHistorySection = () => {
                 <div className={classes.title}>
                     <ShowChartIcon className={classes.icon} />
                     <div className={classes.titleWord}>
-                        類股成交量
+                        類股一年成交趨勢
                     </div>
                 </div>
                 <CustomSelect
