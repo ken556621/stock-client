@@ -8,6 +8,10 @@ import CompanyDetailPopup from "@/components/page-content/individualStock/Compan
 import defaultColors from "@/components/charts/defaultColor";
 import StatusImg from "@/components/table/StatusImg";
 
+import {
+    splitData
+} from "@/helper/format";
+
 
 const CustomTreemap = (props) => {
     const {

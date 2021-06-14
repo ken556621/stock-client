@@ -98,6 +98,10 @@ const useIndustryListSectionStyles = makeStyles((theme) => ({
             borderLeft: "1px solid #eee",
             paddingLeft: theme.spacing(2)
         }
+    },
+    label: {
+        fontSize: ".5rem",
+        color: "#1a1919"
     }
 }));
 
@@ -112,7 +116,7 @@ const IndustryListSection = () => {
     const [targetIndustry, setTargetIndustry] = useState("01");
 
     const [tabIndex, setTabIndex] = useState(2);
-    const [isShowLastData, setIsShowLastData] = useState(false);
+    const [isShowFirstData, setIsShowFirstData] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -186,7 +190,7 @@ const IndustryListSection = () => {
     };
 
     const handleSwitchBtnChange = () => {
-        setIsShowLastData(!isShowLastData)
+        setIsShowFirstData(!isShowFirstData)
     };
 
     useEffect(() => {
@@ -196,6 +200,37 @@ const IndustryListSection = () => {
     useEffect(() => {
         dispatch(reqAllStockInfoAction())
     }, [])
+
+    const SwitchBtn = () => {
+        return filterTreemapData.length > 10 && (
+            <FormControlLabel
+                classes={{
+                    label: classes.label
+                }}
+                control={
+                    <Switch
+                        color="primary"
+                        checked={isShowFirstData}
+                        onChange={handleSwitchBtnChange}
+                    />
+                }
+                label={
+                    <>
+                        <div>
+                            On: 前 1/3 資料
+                        </div>
+                        <div>
+                            Off: 後 2/3 資料
+                        </div>
+                        <div>
+                            (照本益比排序)
+                        </div>
+                    </>
+                }
+                labelPlacement="end"
+            />
+        )
+    };
 
     const CustomTabs = () => {
         return (
@@ -239,27 +274,13 @@ const IndustryListSection = () => {
                         list={formatDropdownList(industrySchema)}
                         onChange={handleEditDone}
                     />
-                    {
-                        filterTreemapData.length > 10 && (
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        color="primary"
-                                        checked={isShowLastData}
-                                        onChange={handleSwitchBtnChange}
-                                    />
-                                }
-                                label="顯示後三分之二資料"
-                                labelPlacement="end"
-                            />
-                        )
-                    }
+                    <SwitchBtn />
                 </div>
             </div>
             <CustomBar
                 data={filterTreemapData}
                 matrixSchema={matrixSchema}
-                isShowLastData={isShowLastData}
+                isShowFirstData={isShowFirstData}
             />
             <div className={classes.titleAndSelectWrapper}>
                 <div className={classes.titleWrapper}>

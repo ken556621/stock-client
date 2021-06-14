@@ -23,9 +23,16 @@ import {
 
 const useCustomBarStyles = makeStyles((theme) => ({
     container: {
-        "& .recharts-surface tspan": {
-            color: "red"
-        }
+        height: 500,
+        position: "relative",
+        borderRadius: 20
+    },
+    resposiveWrapper: {
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        top: 0,
+        left: 0
     }
 }));
 
@@ -33,8 +40,8 @@ const CustomBar = (props) => {
     const {
         data = [],
         matrixSchema = [],
-        isLoading = false,
-        isShowLastData = false
+        isShowFirstData = true,
+        isLoading = false
     } = props;
 
     const classes = useCustomBarStyles();
@@ -66,10 +73,10 @@ const CustomBar = (props) => {
         if (data.length <= 10) {
             return data
         }
-        if (isShowLastData) {
-            return lastData
+        if (isShowFirstData) {
+            return firstThirdData
         }
-        return firstThirdData
+        return lastData
     };
 
     const renderCustomizedLabel = (props) => {
@@ -131,16 +138,8 @@ const CustomBar = (props) => {
     const filteredData = filterData(data);
 
     return (
-        <div className={classes.container} style={{ height: 500, position: "relative", borderRadius: 20 }}>
-            <div
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute",
-                    top: 0,
-                    left: 0
-                }}
-            >
+        <div className={classes.container}>
+            <div className={classes.resposiveWrapper}>
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         width={500}

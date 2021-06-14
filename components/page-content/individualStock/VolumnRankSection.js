@@ -66,6 +66,10 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
         "&:hover": {
             backgroundColor: "#eee"
         }
+    },
+    label: {
+        fontSize: ".5rem",
+        color: "#1a1919"
     }
 }));
 
@@ -78,7 +82,7 @@ const VolumnRankSection = () => {
 
     const [industryVolumnList, setIndustryVolumnList] = useState([]);
 
-    const [isShowLastData, setIsShowLastData] = useState(false);
+    const [isShowFirstData, setIsShowFirstData] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchVolumnRankList = async () => {
@@ -151,7 +155,7 @@ const VolumnRankSection = () => {
     };
 
     const handleSwitchBtnChange = () => {
-        setIsShowLastData(!isShowLastData)
+        setIsShowFirstData(!isShowFirstData)
     };
 
     const tableColumn = [
@@ -312,21 +316,36 @@ const VolumnRankSection = () => {
                     </div>
                 </div>
                 <FormControlLabel
+                    classes={{
+                        label: classes.label
+                    }}
                     control={
                         <Switch
                             color="primary"
-                            checked={isShowLastData}
+                            checked={isShowFirstData}
                             onChange={handleSwitchBtnChange}
                         />
                     }
-                    label="顯示後三分之二資料"
+                    label={
+                        <>
+                            <div>
+                                On: 前 1/3 資料
+                            </div>
+                            <div>
+                                Off: 後 2/3 資料
+                            </div>
+                            <div>
+                                (照成交量排序)
+                            </div>
+                        </>
+                    }
                     labelPlacement="end"
                 />
             </div>
             <CustomPie
                 data={industryVolumnList}
                 dataKey="tradingVolume"
-                isShowLastData={isShowLastData}
+                isShowFirstData={isShowFirstData}
             />
             <CompanyDetailPopup
                 stockId={targetStock}
