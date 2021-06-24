@@ -40,17 +40,8 @@ const useCompanyDetailPopupStyles = makeStyles((theme) => ({
         width: 150
     },
     chartTitle: {
-        marginBottom: theme.spacing(2),
+        marginBottom: theme.spacing(4),
         color: "#0a2f5c"
-    },
-    legend: {
-        marginLeft: theme.spacing(1),
-        fontSize: ".5rem",
-        color: "#00ab5e",
-        "&:first-of-type": {
-            marginLeft: theme.spacing(2),
-            color: "#ff333a"
-        }
     },
     icon: {
         marginRight: theme.spacing(2),
@@ -220,12 +211,6 @@ const CompanyDetailPopup = (props) => {
                 <div className={classes.chartWrapper}>
                     <div className={classes.chartTitle}>
                         今年走勢
-                        <span className={classes.legend}>
-                            最高價
-                        </span>
-                        <span className={classes.legend}>
-                            最低價
-                        </span>
                     </div>
                     <MiniLine stockId={stockId} />
                 </div>

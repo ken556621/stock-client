@@ -6,7 +6,7 @@ import {
 } from "recharts";
 
 import {
-    getYearlyPriceVolumn
+    getMonthlyPriceVolumn
 } from "@/api/stock";
 
 
@@ -26,7 +26,7 @@ const MiniLine = (props) => {
             }
         };
 
-        const res = await getYearlyPriceVolumn(postData);
+        const res = await getMonthlyPriceVolumn(postData);
 
         if (!res.isSuccess) {
             setIsLoading(false);
@@ -44,7 +44,7 @@ const MiniLine = (props) => {
     }, [stockId]);
 
     return (
-        <div style={{ height: 70, position: "relative" }}>
+        <div style={{ height: 100, position: "relative" }}>
             <div
                 style={{
                     width: "100%",
@@ -55,9 +55,8 @@ const MiniLine = (props) => {
                 }}
             >
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart width={300} height={100} data={priceVolumnData}>
-                        <Line type="monotone" dataKey={"highestPrice"} stroke="#ff333a" strokeWidth={2} />
-                        <Line type="monotone" dataKey={"lowestPrice"} stroke="#00ab5e" strokeWidth={2} />
+                    <LineChart data={priceVolumnData}>
+                        <Line type="monotone" dataKey={"averagePrice"} stroke="#ff333a" strokeWidth={1} />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
