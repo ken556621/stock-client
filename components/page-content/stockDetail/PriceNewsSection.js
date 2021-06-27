@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
-
 import { makeStyles } from "@material-ui/core/styles";
 import ShowChartIcon from "@material-ui/icons/ShowChart";
 
@@ -36,8 +34,10 @@ const usePriceNewsSectionStyles = makeStyles((theme) => ({
 const PriceNewsSection = (props) => {
     const {
         stockName = "",
-        priceVolumnData = []
+        priceVolumnData = [],
+        stockNews = []
     } = props;
+
     const classes = usePriceNewsSectionStyles();
 
     return (
@@ -50,6 +50,7 @@ const PriceNewsSection = (props) => {
             </div>
             <PriceNewsLineChart
                 data={priceVolumnData}
+                stockNews={stockNews}
             />
         </div>
     )

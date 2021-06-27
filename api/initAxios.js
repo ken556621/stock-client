@@ -55,6 +55,7 @@ const requestSuccess = (response, config) => {
         isSuccess: true
     };
 };
+
 const requestFailed = (error, config) => {
     const { response, message } = error;
 
@@ -104,6 +105,7 @@ const requestFailed = (error, config) => {
         };
     }
 };
+
 const requestDone = (config) => {
     config.loadingCallback(false);
 };

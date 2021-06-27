@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import dayjs from "dayjs";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -10,7 +10,9 @@ import Footer from "@/components/footer/Footer";
 import StatusImg from "@/components/table/StatusImg";
 
 import {
-    getYearlyPriceVolumn
+    getDailyPriceVolumn,
+    getIndividualStockNews,
+    getStockName
 } from "@/api/stock";
 
 
@@ -20,7 +22,8 @@ const useStockDetailStyles = makeStyles((theme) => ({
     },
     content: {
         minHeight: "calc(100vh - 118px)",
-        padding: theme.spacing(4, 6)
+        padding: theme.spacing(4, 6),
+        position: "relative"
     }
 }));
 
@@ -31,10 +34,34 @@ const stockDetail = () => {
 
     const stockId = router.query.stockId;
 
-    const [priceVolumnData, setPriceVolumnData] = useState([]);
+    const [dailyPriceVolumnData, setDailyPriceVolumnData] = useState([]);
+    const [stockNews, setStockNews] = useState([]);
+
+    const [stockName, setStockName] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchYearlyPriceVolumn = async () => {
+    const fetchDailyPriceVolumn = async () => {
+        setIsLoading(true);
+        const postData = {
+            body: {
+                stockId,
+                startDate: dayjs().subtract(10, "year").format("YYYY/MM/DD"),
+                endDate: dayjs().format("YYYY/MM/DD")
+            }
+        };
+
+        const res = await getDailyPriceVolumn(postData);
+
+        if (!res.isSuccess) {
+            setIsLoading(false);
+            return
+        }
+
+        setDailyPriceVolumnData(res.data);
+        setIsLoading(false);
+    };
+
+    const fetchIndividualStockNews = async () => {
         setIsLoading(true);
         const postData = {
             body: {
@@ -42,21 +69,44 @@ const stockDetail = () => {
             }
         };
 
-        const res = await getYearlyPriceVolumn(postData);
+        const res = await getIndividualStockNews(postData);
 
         if (!res.isSuccess) {
             setIsLoading(false);
             return
         }
 
-        setPriceVolumnData(res.data);
+        setStockNews(res.data);
+        setIsLoading(false);
+    };
+
+    const fetchStockName = async () => {
+        setIsLoading(true);
+        const postData = {
+            body: {
+                stockId
+            }
+        };
+
+        const res = await getStockName(postData);
+
+        if (!res.isSuccess) {
+            setIsLoading(false);
+            return
+        }
+
+        const taiwanStock = res.data.filter(item => item.exchDisp === "台灣");
+
+        setStockName(taiwanStock[0].name);
         setIsLoading(false);
     };
 
     useEffect(() => {
         if (!stockId) return
 
-        fetchYearlyPriceVolumn()
+        fetchDailyPriceVolumn();
+        fetchIndividualStockNews();
+        fetchStockName();
     }, [stockId]);
 
     if (isLoading) {
@@ -70,8 +120,9 @@ const stockDetail = () => {
             <NavigationBar />
             <div className={classes.content}>
                 <PriceNewsSection
-                    priceVolumnData={priceVolumnData}
-                    stockName={"stockName"}
+                    priceVolumnData={dailyPriceVolumnData}
+                    stockNews={stockNews}
+                    stockName={stockName}
                 />
             </div>
             <Footer />
