@@ -40,7 +40,7 @@ const IndustryDailyRankBar = (props) => {
 
     const renderBar = () => {
         return (
-            <Bar dataKey="percentage" barSize={6}>
+            <Bar dataKey="percentage" barSize={"10vw"}>
                 {
                     data.map((entry, index) => (
                         <Cell key={index} fill={entry.percentage > 0 ? "#ff333a" : "#00ab5e"} />
