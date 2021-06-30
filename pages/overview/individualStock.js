@@ -7,11 +7,8 @@ import VolumnRankSection from "@/components/page-content/individualStock/VolumnR
 import Footer from "@/components/footer/Footer";
 
 const useMacroEconomicStyles = makeStyles((theme) => ({
-    container: {
-
-    },
     content: {
-        minHeight: "calc(100vh - 118px)",
+        minHeight: "calc(100vh - 156px)",
         padding: theme.spacing(4, 6)
     }
 }));
@@ -20,7 +17,7 @@ const individualStock = () => {
     const classes = useMacroEconomicStyles();
 
     return (
-        <div className={classes.container}>
+        <div>
             <NavigationBar />
             <div className={classes.content}>
                 <VolumnRankSection />

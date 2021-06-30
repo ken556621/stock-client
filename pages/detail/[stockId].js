@@ -21,7 +21,7 @@ const useStockDetailStyles = makeStyles((theme) => ({
 
     },
     content: {
-        minHeight: "calc(100vh - 118px)",
+        minHeight: "calc(100vh - 156px)",
         padding: theme.spacing(4, 6),
         position: "relative"
     }

@@ -14,7 +14,7 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
 
     },
     content: {
-        minHeight: "calc(100vh - 118px)",
+        minHeight: "calc(100vh - 156px)",
         padding: theme.spacing(4, 6)
     }
 }));

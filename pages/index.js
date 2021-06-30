@@ -14,7 +14,7 @@ const useHomeStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    minHeight: "calc(100vh - 118px)"
+    minHeight: "calc(100vh - 156px)"
   }
 }))
 
