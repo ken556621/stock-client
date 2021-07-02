@@ -31,7 +31,8 @@ const useCompanyDetailPopupStyles = makeStyles((theme) => ({
         display: "flex"
     },
     content: {
-        position: "relative"
+        position: "relative",
+        minWidth: 500
     },
     chartWrapper: {
         position: "absolute",

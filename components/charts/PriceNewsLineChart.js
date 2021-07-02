@@ -10,8 +10,6 @@ import {
     Legend
 } from "recharts";
 
-import uniqBy from "lodash/uniqBy";
-
 
 
 const PriceNewsLineChart = (props) => {
@@ -28,8 +26,8 @@ const PriceNewsLineChart = (props) => {
                 <svg
                     x={cx - 10}
                     y={cy - 10}
-                    width={20}
-                    height={20}
+                    width={5}
+                    height={5}
                     fill="green"
                     viewBox="0 0 1024 1024"
                 >
@@ -44,25 +42,7 @@ const PriceNewsLineChart = (props) => {
     };
 
     const combineNewsAndStocks = (stocks, news) => {
-        const result = [];
-        stocks.forEach(stock => {
-            let obj = {}
-            news.forEach(item => {
-                if (stock.date === item.date) {
-                    obj = {
-                        ...stock,
-                        ...item
-                    }
-                    return
-                }
-                obj = {
-                    ...stock
-                }
-                result.push(obj)
-            })
-        })
-
-        return uniqBy(result, "date");
+        return news.map((item, i) => Object.assign({}, item, stocks[i]));
     };
 
     const renderLegend = () => {
@@ -72,10 +52,6 @@ const PriceNewsLineChart = (props) => {
     const renderTooltip = (value) => {
         return [value, "平均價"]
     };
-
-    const combinedData = combineNewsAndStocks(data, stockNews);
-
-    console.log(combinedData)
 
     return (
         <div style={{ height: 250, position: "relative" }}>
@@ -90,7 +66,7 @@ const PriceNewsLineChart = (props) => {
             >
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
-                        data={combinedData}
+                        data={data}
                     >
                         <CartesianGrid
                             vertical={false}
