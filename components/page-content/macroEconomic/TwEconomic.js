@@ -1,10 +1,17 @@
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PublicIcon from '@material-ui/icons/Public';
 
+import TwCpiLine from "@/components/charts/economic/TwCpiLine";
 
-const useMacroEconomicStyles = makeStyles((theme) => ({
+import {
+    getTwIndex
+} from "@/api/economic";
+
+
+const useTwEconomicStyles = makeStyles((theme) => ({
     container: {
         padding: theme.spacing(4, 6),
         boxShadow: "0px 2px 14px 0 rgb(69 20 229 / 10%)",
@@ -13,6 +20,7 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
     titleWrapper: {
         display: "flex",
         alignItems: "center",
+        marginBottom: theme.spacing(4),
         color: "#1a1919",
         fontSize: "1.125rem"
     },
@@ -40,26 +48,31 @@ const useMacroEconomicStyles = makeStyles((theme) => ({
     }
 }));
 
-const GlobalSection = () => {
-    const classes = useMacroEconomicStyles();
+const TwEconomic = () => {
+    const classes = useTwEconomicStyles();
+
+    const [twIndex, setTwIndex] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchTwIndex = async () => {
+        setIsLoading(true);
+        const res = await getTwIndex();
+
+        if (!res.isSuccess) {
+            setIsLoading(false);
+            return
+        }
+
+        setTwIndex(res.data)
+    }
+
+    useEffect(() => {
+        fetchTwIndex()
+    }, [])
 
     return (
         <div className={classes.container}>
-            <div className={classes.titleWrapper}>
-                <PublicIcon className={classes.icon} />
-                <div className={classes.title}>
-                    美國經濟指數
-                </div>
-            </div>
-            <div className={classes.cpi}>
-
-            </div>
-            <div className={classes.pmi}>
-
-            </div>
-            <div className={classes.unemploymentRate}>
-
-            </div>
             <div className={classes.titleWrapper}>
                 <PublicIcon className={classes.icon} />
                 <div className={classes.title}>
@@ -67,7 +80,9 @@ const GlobalSection = () => {
                 </div>
             </div>
             <div className={classes.cpi}>
-
+                <TwCpiLine
+                    data={twIndex}
+                />
             </div>
             <div className={classes.pmi}>
 
@@ -79,4 +94,4 @@ const GlobalSection = () => {
     )
 };
 
-export default GlobalSection;
+export default TwEconomic;

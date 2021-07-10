@@ -17,9 +17,9 @@ const Footer = () => {
 
     return (
         <div>
-            <marquee direction="right" scrolldelay="60" class="position-absolute">
+            {/* <marquee direction="right" scrolldelay="60" class="position-absolute">
                 <img src="https://akstatic.streetvoice.com/asset/images/sv-cat.gif" width="20" height="28" border="0" />
-            </marquee>
+            </marquee> */}
             <div className={classes.footerWrapper}>
                 {`Copyright © ${dayjs().year()} Koophio`}
             </div>
