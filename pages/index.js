@@ -14,11 +14,17 @@ import {
 
 const useHomeStyles = makeStyles(theme => ({
   root: {
-    position: "relative",
-    minHeight: "100vh"
+
+  },
+  content: {
+    minHeight: "calc(100vh - 156px)",
+    position: "relative"
   },
   searchBarRoot: {
-    minHeight: "calc(100vh - 156px)"
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   },
   stockList: {
     width: 500
@@ -65,17 +71,19 @@ const Home = () => {
   return (
     <div className={classes.root}>
       <NavigationBar />
-      <div className={classes.searchBarRoot}>
-        <SearchBar
-          classes={{
-            inputRoot: classes.inputRoot
-          }}
-          onChange={inputChangeDebounce}
-          placeholder="篩選漲跌幅度"
-        />
-        <StockList
-          data={nameList}
-        />
+      <div className={classes.content}>
+        <div className={classes.searchBarRoot}>
+          <SearchBar
+            classes={{
+              inputRoot: classes.inputRoot
+            }}
+            onChange={inputChangeDebounce}
+            placeholder="搜尋股票代號"
+          />
+          <StockList
+            data={nameList}
+          />
+        </div>
       </div>
       <Footer />
     </div>
