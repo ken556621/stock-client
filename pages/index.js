@@ -1,9 +1,16 @@
 
+import { useState, useCallback } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import debounce from "lodash/debounce";
 
 import SearchBar from "@/components/searchInput/SearchBar";
 import NavigationBar from "@/components/navBar/NavigationBar";
 import Footer from "@/components/footer/Footer";
+import StockList from "@/components/list/StockList";
+
+import {
+  getStockName
+} from "@/api/stock";
 
 const useHomeStyles = makeStyles(theme => ({
   root: {
@@ -21,14 +28,39 @@ const useHomeStyles = makeStyles(theme => ({
 const Home = () => {
   const classes = useHomeStyles();
 
+  const [nameList, setNameList] = useState([]);
+
+  const debounceTime = 500;
+
   const handleSearchBarChange = (e) => {
     const value = e.target.value.trim();
 
-    if (!value) return
+    if (!value) {
+      setNameList([])
+      return
+    }
 
-    console.log(value)
+    fetchStockList(value)
   };
 
+  const fetchStockList = async (searchInput) => {
+    const postData = {
+      body: {
+        stockId: searchInput
+      }
+    };
+
+    const res = await getStockName(postData);
+
+    setNameList(res.data)
+  };
+
+  const inputChangeDebounce = useCallback(
+    debounce(
+      (e) => handleSearchBarChange(e),
+      debounceTime
+    )
+    , []);
 
   return (
     <div className={classes.root}>
@@ -38,12 +70,12 @@ const Home = () => {
           classes={{
             inputRoot: classes.inputRoot
           }}
-          onChange={handleSearchBarChange}
+          onChange={inputChangeDebounce}
           placeholder="篩選漲跌幅度"
         />
-        <div className={classes.stockList}>
-          ken
-        </div>
+        <StockList
+          data={nameList}
+        />
       </div>
       <Footer />
     </div>
