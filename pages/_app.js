@@ -3,6 +3,7 @@ import { useStore } from "@/redux/store";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import Head from "next/head";
+import "react-datepicker/dist/react-datepicker.css"
 
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';

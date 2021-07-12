@@ -10,12 +10,13 @@ import {
     Legend
 } from "recharts";
 
+import StatusImg from "@/components/table/StatusImg";
 
 
 const PriceNewsLineChart = (props) => {
     const {
         data = [],
-        stockNews = [],
+        isLoading
     } = props;
 
     const CustomizedDot = (props) => {
@@ -52,6 +53,18 @@ const PriceNewsLineChart = (props) => {
     const renderTooltip = (value) => {
         return [value, "平均價"]
     };
+
+    if (isLoading) {
+        return (
+            <StatusImg type="loading" word="Data is loading" />
+        )
+    }
+
+    if (!data.length) {
+        return (
+            <StatusImg />
+        )
+    }
 
     return (
         <div style={{ height: 250, position: "relative" }}>

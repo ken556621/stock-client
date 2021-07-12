@@ -70,14 +70,11 @@ const IndustryDailyRank = () => {
         const res = await getIndustryVolumn();
 
         if (!res.isSuccess) {
-            console.log("2222222qqqqqqq==========")
             setIsLoading(false);
             return
         }
 
         const formatedData = formatData(res.data);
-
-        console.log(formatedData, "formatedData")
 
         setIndustryVolumnList(formatedData);
         setIsLoading(false);

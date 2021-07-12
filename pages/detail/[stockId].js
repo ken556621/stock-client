@@ -10,7 +10,6 @@ import Footer from "@/components/footer/Footer";
 import StatusImg from "@/components/table/StatusImg";
 
 import {
-    getDailyPriceVolumn,
     getIndividualStockNews,
     getStockName
 } from "@/api/stock";
@@ -34,51 +33,10 @@ const stockDetail = () => {
 
     const stockId = router.query.stockId;
 
-    const [dailyPriceVolumnData, setDailyPriceVolumnData] = useState([]);
     const [stockNews, setStockNews] = useState([]);
 
     const [stockName, setStockName] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-    const fetchDailyPriceVolumn = async () => {
-        setIsLoading(true);
-        const postData = {
-            body: {
-                stockId,
-                startDate: dayjs().subtract(10, "year").format("YYYY/MM/DD"),
-                endDate: dayjs().format("YYYY/MM/DD")
-            }
-        };
-
-        const res = await getDailyPriceVolumn(postData);
-
-        if (!res.isSuccess) {
-            setIsLoading(false);
-            return
-        }
-
-        setDailyPriceVolumnData(res.data);
-        setIsLoading(false);
-    };
-
-    const fetchIndividualStockNews = async () => {
-        setIsLoading(true);
-        const postData = {
-            body: {
-                stockId
-            }
-        };
-
-        const res = await getIndividualStockNews(postData);
-
-        if (!res.isSuccess) {
-            setIsLoading(false);
-            return
-        }
-
-        setStockNews(res.data);
-        setIsLoading(false);
-    };
 
     const fetchStockName = async () => {
         setIsLoading(true);
@@ -104,8 +62,6 @@ const stockDetail = () => {
     useEffect(() => {
         if (!stockId) return
 
-        fetchDailyPriceVolumn();
-        fetchIndividualStockNews();
         fetchStockName();
     }, [stockId]);
 
@@ -120,7 +76,6 @@ const stockDetail = () => {
             <NavigationBar />
             <div className={classes.content}>
                 <PriceNewsSection
-                    priceVolumnData={dailyPriceVolumnData}
                     stockNews={stockNews}
                     stockName={stockName}
                 />
