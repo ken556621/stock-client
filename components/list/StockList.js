@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStockListStyles = makeStyles(theme => ({
     container: {
+        position: "absolute",
         width: 500,
         boxShadow: "0px 0px 14px rgba(137, 174, 255, 0.2)",
         borderRadius: 6
@@ -13,8 +14,12 @@ const useStockListStyles = makeStyles(theme => ({
     itemWrapper: {
         display: "flex",
         justifyContent: "space-between",
+        cursor: "pointer",
         "&:not(&:last-of-type)": {
             marginBottom: theme.spacing(2)
+        },
+        "&:hover": {
+            boxShadow: "0px 0px 12px #eee"
         }
     },
     stockName: {
@@ -27,16 +32,28 @@ const useStockListStyles = makeStyles(theme => ({
         color: "#5b636a"
     },
     padding: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        height: 300,
+        overflow: "scroll"
     }
 }))
 
 const StockList = (props) => {
     const {
-        data = []
+        data = [],
+        handleClickTargetStock = null
     } = props;
 
     const classes = useStockListStyles();
+
+    const handleClickList = (targetStock) => {
+        const {
+            name,
+            symbol
+        } = targetStock;
+
+        handleClickTargetStock && handleClickTargetStock({ name, symbol })
+    };
 
     return (
         <div
@@ -46,7 +63,11 @@ const StockList = (props) => {
         >
             {
                 data.map(item => (
-                    <div className={classes.itemWrapper}>
+                    <div
+                        className={classes.itemWrapper}
+                        onClick={() => handleClickList(item)}
+                        key={item.symbol}
+                    >
                         <div className={classes.stockName}>
                             {item.name}
                             <div className={classes.stockId}>
