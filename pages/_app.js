@@ -6,9 +6,11 @@ import Head from "next/head";
 import "react-datepicker/dist/react-datepicker.css"
 
 import { ThemeProvider } from "@material-ui/styles";
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import theme from "@/theme/theme";
+
+import "@/components/datePicker/datePicker.css";
 
 const MetaInfo = () => {
   return (

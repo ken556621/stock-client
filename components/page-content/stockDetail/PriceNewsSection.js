@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 
 import { makeStyles } from "@material-ui/core/styles";
 import ShowChartIcon from "@material-ui/icons/ShowChart";
-import DatePicker from "react-datepicker";
 
 import PriceNewsLineChart from "@/components/charts/PriceNewsLineChart";
+import CustomDateInput from "@/components/datePicker/CustomDateInput";
 
 import {
     getDailyPriceVolumn
@@ -42,8 +43,10 @@ const usePriceNewsSectionStyles = makeStyles((theme) => ({
             paddingLeft: theme.spacing(2)
         }
     },
-    endDatePicker: {
-        marginLeft: theme.spacing(2)
+    datePickerRoot: {
+        "& input": {
+            border: "none"
+        }
     }
 }));
 
@@ -88,10 +91,14 @@ const PriceNewsSection = (props) => {
         setIsLoading(false);
     };
 
-    const handleDatePickerChange = (dates) => {
-        const [start, end] = dates;
-        setStartDate(start);
-        setEndDate(end);
+    const updateSelectedDate = (dates) => {
+        const {
+            startDate,
+            endDate
+        } = dates;
+
+        setStartDate(startDate);
+        setEndDate(endDate);
     };
 
     useEffect(() => {
@@ -109,15 +116,9 @@ const PriceNewsSection = (props) => {
                         {stockName}
                     </div>
                 </div>
-                {/* TODO:增加 半年 一年 五年 十年選擇按鈕 */}
-                <div>
-                    <DatePicker
-                        selected={startDate}
-                        onChange={handleDatePickerChange}
-                        startDate={startDate}
-                        endDate={endDate}
-                        maxDate={new Date()}
-                        selectsRange
+                <div className={classes.datePickerRoot}>
+                    <CustomDateInput
+                        updateSelectedDate={updateSelectedDate}
                     />
                 </div>
             </div>
