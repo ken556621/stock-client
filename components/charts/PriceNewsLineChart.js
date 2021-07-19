@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import {
-    LineChart,
-    Line,
+    AreaChart,
+    Area,
     ResponsiveContainer,
     CartesianGrid,
     XAxis,
@@ -78,7 +78,7 @@ const PriceNewsLineChart = (props) => {
                 }}
             >
                 <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
+                    <AreaChart
                         data={data}
                     >
                         <CartesianGrid
@@ -89,13 +89,14 @@ const PriceNewsLineChart = (props) => {
                         <YAxis />
                         <Tooltip formatter={renderTooltip} />
                         <Legend formatter={renderLegend} />
-                        <Line
+                        <Area
                             type="monotone"
                             dataKey="closePrice"
                             stroke="#8884d8"
+                            fill="rgba(90,44,221,.1)"
                             dot={<CustomizedDot />}
                         />
-                    </LineChart>
+                    </AreaChart>
                 </ResponsiveContainer>
             </div>
         </div>
