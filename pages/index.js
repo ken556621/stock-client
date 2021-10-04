@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from "react";
 import { useRouter } from "next/router";
 import debounce from "lodash/debounce";
@@ -10,9 +9,7 @@ import NavigationBar from "@/components/navBar/NavigationBar";
 import Footer from "@/components/footer/Footer";
 import StockList from "@/components/list/StockList";
 
-import {
-  getStockName
-} from "@/api/stock";
+import { getStockName } from "@/api/stock";
 
 const useHomeStyles = makeStyles(theme => ({
   content: {
@@ -28,7 +25,7 @@ const useHomeStyles = makeStyles(theme => ({
   stockList: {
     width: 500
   }
-}))
+}));
 
 const Home = () => {
   const classes = useHomeStyles();
@@ -39,7 +36,7 @@ const Home = () => {
 
   const debounceTime = 500;
 
-  const fetchStockList = async (searchInput) => {
+  const fetchStockList = async searchInput => {
     const postData = {
       body: {
         stockId: searchInput
@@ -48,34 +45,36 @@ const Home = () => {
 
     const res = await getStockName(postData);
 
-    setNameList(res.data)
+    if (!res.data || !Array.isArray(res.data)) {
+      return;
+    }
+
+    setNameList(res.data);
   };
 
-  const handleSearchBarChange = (e) => {
+  const handleSearchBarChange = e => {
     const value = e.target.value.trim();
 
     if (!value) {
-      setNameList([])
-      return
+      setNameList([]);
+      return;
     }
 
-    fetchStockList(value)
+    fetchStockList(value);
   };
 
   const handleClickTargetStock = ({ name, symbol }) => {
-    if (!symbol) return
+    if (!symbol) return;
 
     const stockId = symbol.split(".")[0];
 
-    router.push(`/detail/${stockId}`)
+    router.push(`/detail/${stockId}`);
   };
 
   const inputChangeDebounce = useCallback(
-    debounce(
-      (e) => handleSearchBarChange(e),
-      debounceTime
-    )
-    , []);
+    debounce(e => handleSearchBarChange(e), debounceTime),
+    []
+  );
 
   return (
     <div>
@@ -97,7 +96,7 @@ const Home = () => {
       </div>
       <Footer />
     </div>
-  )
+  );
 };
 
 export default Home;
